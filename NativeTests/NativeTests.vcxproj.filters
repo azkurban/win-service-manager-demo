@@ -3,29 +3,26 @@
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="ServiceLib">
-      <UniqueIdentifier>{f462af4b-86a4-4fc2-bc55-4917f026d4d4}</UniqueIdentifier>
+      <UniqueIdentifier>{dfcda4d8-a477-41f5-9db0-3a4032be8864}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ServiceLib\ServiceConfig.h">
-      <Filter>ServiceLib</Filter>
     </ClInclude>
     <ClInclude Include="..\ServiceLib\ServiceContants.h">
       <Filter>ServiceLib</Filter>
@@ -33,27 +30,24 @@
     <ClInclude Include="..\ServiceLib\ServiceController.h">
       <Filter>ServiceLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\ServiceLib\ServiceEnumerator.h">
+    <ClInclude Include="..\ServiceLib\ServiceHandle.h">
       <Filter>ServiceLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\ServiceLib\ServiceHandle.h">
+    <ClInclude Include="..\ServiceLib\ServiceConfig.h">
+      <Filter>ServiceLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServiceLib\ServiceEnumerator.h">
       <Filter>ServiceLib</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="svcman.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="svcman.cpp">
+    <ClCompile Include="NativeTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
