@@ -46,13 +46,13 @@ public:
 //int GetServiceListSize();
 
 DLL_EXPORT_API
-void GetServiceList(ServiceProcess services[]);
+void GetServiceList(SAFEARRAY& services);
 
 DLL_EXPORT_API
 void __stdcall SetStringArray(SAFEARRAY& safeArray);
 
 DLL_EXPORT_API
-void __stdcall GetStringArray(SAFEARRAY*& pSafeArray);
+void GetStringArray(SAFEARRAY*& pSafeArray);
 
 
 

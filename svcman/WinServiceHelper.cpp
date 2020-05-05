@@ -53,9 +53,9 @@ void WinServiceHelper::GetServiceList(ServiceProcess services[])
 //}
 
 DLL_EXPORT_API
-void GetServiceList(ServiceProcess services[]) {
+void GetServiceList(SAFEARRAY& services) {
     auto helper = new WinServiceHelper();
-    helper->GetServiceList(services);
+    //helper->GetServiceList(services);
 }
 
 std::vector<std::wstring> s_strings;
@@ -85,7 +85,7 @@ void __stdcall SetStringArray(SAFEARRAY& safeArray)
 }
 
 DLL_EXPORT_API
-void __stdcall GetStringArray(SAFEARRAY*& pSafeArray)
+void GetStringArray(SAFEARRAY*& pSafeArray)
 {
     if (s_strings.size() > 0)
     {
