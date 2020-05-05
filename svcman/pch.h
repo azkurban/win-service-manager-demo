@@ -15,8 +15,11 @@
 
 #include "targetver.h"
 
-//#include <stdio.h>
+#include <stdio.h>
 #include <tchar.h>
+
+// Windows Header Files:
+#include <windows.h>
 
 
 #endif //PCH_H

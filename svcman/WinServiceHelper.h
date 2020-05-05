@@ -2,17 +2,18 @@
 
 #define DLL_EXPORT_API extern "C" __declspec(dllexport)
 
+#include "OleAuto.h"
 #include "ServiceController.h"
 #include "ServiceEnumerator.h"
 
 struct ServiceProcess
 {
-    int                     PID;
-    ServiceString           Name;
-    ServiceString           Description;
-    ServiceString           GroupName;
-    ServiceString           ImagePath;
-    ServiceString           Status;
+    //int              PID;
+    LPWSTR           Name;
+    LPWSTR           Description;
+    LPWSTR           GroupName;
+    LPWSTR           ImagePath;
+    LPWSTR           Status;
 };
 
 
@@ -38,13 +39,20 @@ public:
     }
 
     void GetServiceList(ServiceProcess services[]);
-    int ServiceCount();
+    //int ServiceCount();
 };
 
-DLL_EXPORT_API
-int GetServiceListSize();
+//DLL_EXPORT_API
+//int GetServiceListSize();
 
 DLL_EXPORT_API
 void GetServiceList(ServiceProcess services[]);
+
+DLL_EXPORT_API
+void __stdcall SetStringArray(SAFEARRAY& safeArray);
+
+DLL_EXPORT_API
+void __stdcall GetStringArray(SAFEARRAY*& pSafeArray);
+
 
 

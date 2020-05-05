@@ -8,9 +8,19 @@ namespace NativeDllTestApp
     /// </summary>
     internal static class NativeAPI
     {
-        private const string nativeDll = "svcman.dll";
+        private const string DLL_LOCATION = "svcman.dll";
 
-        [DllImport(nativeDll/*, CallingConvention = CallingConvention.Cdecl*/)]
-        internal static extern void GetServiceList([In, Out] ServiceProcess[] serviceProcesses, int size);
+        [DllImport(DLL_LOCATION/*, CallingConvention = CallingConvention.Cdecl*/)]
+        internal static extern void GetServiceList(out ServiceProcess[] serviceProcesses);
+        
+        //[DllImport(DLL_LOCATION/*, CallingConvention = CallingConvention.Cdecl*/)]
+        //internal static extern int GetServiceListSize();
+
+        [DllImport(DLL_LOCATION, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public static extern void SetStringArray([MarshalAs(UnmanagedType.SafeArray)] string[] array);
+
+        [DllImport(DLL_LOCATION, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public static extern void GetStringArray([MarshalAs(UnmanagedType.SafeArray)] out string[] array);
+
     }
 }

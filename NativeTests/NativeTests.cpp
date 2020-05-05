@@ -40,8 +40,15 @@ int main()
 
 
    auto services = ServiceEnumerator::EnumerateServices();
+   auto size = services.size();
+   std::wcout << "Size:    " << size << std::endl;
+
+   int count = 0;
+
    for (auto const & s : services)
    {
+       count++;
+
        auto sp = ServiceProcess{};
 
        // open the service
@@ -55,16 +62,17 @@ int main()
        sp.ImagePath = config.GetBinaryPathName();
 
 
-      std::wcout << "Name:    " << sp.Name << std::endl
-                 << "Description: " << sp.Description << std::endl
-                 << "Status: "  << sp.Status << std::endl
-                 //<< "Status:  " << ServiceStatusToString(static_cast<ServiceStatus>(s.Status.dwCurrentState)) << std::endl
-                 << "--------------------------" << std::endl;
+      //std::wcout << "Name:    " << sp.Name << std::endl
+      //           << "Description: " << sp.Description << std::endl
+      //           << "Status: "  << sp.Status << std::endl
+      //           //<< "Status:  " << ServiceStatusToString(static_cast<ServiceStatus>(s.Status.dwCurrentState)) << std::endl
+      //           << "--------------------------" << std::endl;
 
 
-      //printServiceInfo(config);
-      print_config(config);
+      //print_config(config);
    }
+
+   std::wcout << "Count:    " << count << std::endl;
 
    // open the service
    auto service = ServiceController{ L"LanmanWorkstation" };
