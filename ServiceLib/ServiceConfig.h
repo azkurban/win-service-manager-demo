@@ -161,7 +161,9 @@ public:
             {
                auto lpsd = reinterpret_cast<LPSERVICE_DESCRIPTION>(buffer.data());
 
-               description = lpsd->lpDescription;
+               if (lpsd->lpDescription) {
+                   description = lpsd->lpDescription;
+               }
             }
          }
       }

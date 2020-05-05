@@ -8,15 +8,62 @@
 
 #include <iostream>
 
+struct ServiceProcess
+{
+    int                     PID;
+    ServiceString           Name;
+    ServiceString           Description;
+    ServiceString           GroupName;
+    ServiceString           ImagePath;
+    ServiceString           Status;
+};
+
+
 int main()
 {
+    auto print_config = [](ServiceConfig const config) {
+        std::wcout << "---------------------" << std::endl;
+        std::wcout << "Start name:          " << config.GetStartName() << std::endl;
+        std::wcout << "Display name:        " << config.GetDisplayName() << std::endl;
+        std::wcout << "Description:         " << config.GetDescription() << std::endl;
+        std::wcout << "Type:                " << ServiceTypeToString(config.GetType()) << std::endl;
+        std::wcout << "Start type:          " << ServiceStartTypeToString(config.GetStartType()) << std::endl;
+        std::wcout << "Error control:       " << ServiceErrorControlToString(config.GetErrorControl()) << std::endl;
+        std::wcout << "Image path:         " << config.GetBinaryPathName() << std::endl;
+        std::wcout << "Load ordering group: " << config.GetLoadOrderingGroup() << std::endl;
+        std::wcout << "Tag ID:              " << config.GetTagId() << std::endl;
+        std::wcout << "Dependencies:        ";
+        for (auto const& d : config.GetDependencies()) std::wcout << d << ", ";
+        std::wcout << std::endl;
+        std::wcout << "---------------------" << std::endl;
+    };
+
+
    auto services = ServiceEnumerator::EnumerateServices();
    for (auto const & s : services)
    {
-      std::wcout << "Name:    " << s.ServiceName << std::endl
-                 << "Display: " << s.DisplayName << std::endl
-                 << "Status:  " << ServiceStatusToString(static_cast<ServiceStatus>(s.Status.dwCurrentState)) << std::endl
+       auto sp = ServiceProcess{};
+
+       // open the service
+       auto service = ServiceController{ s.ServiceName };
+       auto config = service.GetServiceConfig();
+
+       sp.PID = 0;
+       sp.Name = s.ServiceName;
+       sp.Description = s.DisplayName;
+       sp.Status = ServiceStatusToString(static_cast<ServiceStatus>(s.Status.dwCurrentState));
+       sp.ImagePath = config.GetBinaryPathName();
+
+
+      std::wcout << "Name:    " << sp.Name << std::endl
+                 << "Description: " << sp.Description << std::endl
+                 << "Status: "  << sp.Status << std::endl
+                 //<< "Status:  " << ServiceStatusToString(static_cast<ServiceStatus>(s.Status.dwCurrentState)) << std::endl
                  << "--------------------------" << std::endl;
+
+
+      //printServiceInfo(config);
+      print_config(config);
    }
 
    // open the service
@@ -26,22 +73,6 @@ int main()
       std::wcout << "Status:              " << ServiceStatusToString(service.GetStatus()) << std::endl; 
    };
 
-   auto print_config = [](ServiceConfig const config) {
-      std::wcout << "---------------------" << std::endl;
-      std::wcout << "Start name:          " << config.GetStartName() << std::endl;
-      std::wcout << "Display name:        " << config.GetDisplayName() << std::endl;
-      std::wcout << "Description:         " << config.GetDescription() << std::endl;
-      std::wcout << "Type:                " << ServiceTypeToString(config.GetType()) << std::endl;
-      std::wcout << "Start type:          " << ServiceStartTypeToString(config.GetStartType()) << std::endl;
-      std::wcout << "Error control:       " << ServiceErrorControlToString(config.GetErrorControl()) << std::endl;
-      std::wcout << "Binary path:         " << config.GetBinaryPathName() << std::endl;
-      std::wcout << "Load ordering group: " << config.GetLoadOrderingGroup() << std::endl;
-      std::wcout << "Tag ID:              " << config.GetTagId() << std::endl;
-      std::wcout << "Dependencies:        ";
-      for (auto const & d : config.GetDependencies()) std::wcout << d << ", ";
-      std::wcout << std::endl;
-      std::wcout << "---------------------" << std::endl;
-   };
 
    // read the service configuration, temporary change its description and then restore the old one
    {
@@ -102,5 +133,27 @@ int main()
    }
 
    return 0;
+}
+
+void printServiceInfo(ServiceConfig const config) {
+    auto print_config = [](ServiceConfig const config) {
+        std::wcout << "---------------------" << std::endl;
+        std::wcout << "Start name:          " << config.GetStartName() << std::endl;
+        std::wcout << "Display name:        " << config.GetDisplayName() << std::endl;
+        std::wcout << "Description:         " << config.GetDescription() << std::endl;
+        std::wcout << "Type:                " << ServiceTypeToString(config.GetType()) << std::endl;
+        std::wcout << "Start type:          " << ServiceStartTypeToString(config.GetStartType()) << std::endl;
+        std::wcout << "Error control:       " << ServiceErrorControlToString(config.GetErrorControl()) << std::endl;
+        std::wcout << "Binary path:         " << config.GetBinaryPathName() << std::endl;
+        std::wcout << "Load ordering group: " << config.GetLoadOrderingGroup() << std::endl;
+        std::wcout << "Tag ID:              " << config.GetTagId() << std::endl;
+        std::wcout << "Dependencies:        ";
+        for (auto const& d : config.GetDependencies()) std::wcout << d << ", ";
+        std::wcout << std::endl;
+        std::wcout << "---------------------" << std::endl;
+    };
+
+    print_config(config);
+
 }
 

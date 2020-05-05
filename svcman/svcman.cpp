@@ -1,23 +1,18 @@
+#pragma once
 #include "pch.h"
-#include "svcman.h"
+//#include "svcman.h"
+//#include "WinServiceHelper.h"
 
-#include "ServiceController.h"
-#include "ServiceEnumerator.h"
+//DLL_EXPORT_API
+//int GetServiceListSize() {
+//    auto helper = new WinServiceHelper();
+//    return helper->ServiceCount();
+//}
+//
+//DLL_EXPORT_API
+//void GetServiceList(ServiceProcess services[]) {
+//    auto helper = new WinServiceHelper();
+//    helper->GetServiceList(services);
+//}
 
-
-SVCMAN_C_FUNCTION
-int GetServiceList() {
-    auto services = ServiceEnumerator::EnumerateServices();
-
-    for (auto const& s : services)
-    {
-        //std::wcout << "Name:    " << s.ServiceName << std::endl
-        //    << "Display: " << s.DisplayName << std::endl
-        //    << "Status:  " << ServiceStatusToString(static_cast<ServiceStatus>(s.Status.dwCurrentState)) << std::endl
-        //    << "--------------------------" << std::endl;
-    }
-
-    return 123;
-
-}
 

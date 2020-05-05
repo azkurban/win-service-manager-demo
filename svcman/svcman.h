@@ -1,10 +1,14 @@
 #pragma once
 
-#define SVCMAN_C_FUNCTION extern "C" __declspec(dllexport)
+//#define DLL_EXPORT_API extern "C" __declspec(dllexport)
 
-//#include "ServiceController.h"
-//#include "ServiceEnumerator.h"
+//#include "WinServiceHelper.h"
+//
+//
+//DLL_EXPORT_API 
+//int GetServiceListSize();
+//
+//DLL_EXPORT_API 
+//void GetServiceList(ServiceProcess services[]);
 
-SVCMAN_C_FUNCTION
-int GetServiceList();
 

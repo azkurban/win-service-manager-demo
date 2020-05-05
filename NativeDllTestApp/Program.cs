@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.InteropServices;
 
 namespace NativeDllTestApp
 {
@@ -12,8 +11,23 @@ namespace NativeDllTestApp
         {
             try
             {
-                var result = UnsafeNativeMethods.GetServiceList();
-                Console.WriteLine(result);
+                var count = 5;
+                var services = new ServiceProcess[count];
+                NativeAPI.GetServiceList(services, count);
+
+                
+                foreach(var s in services)
+                {
+                    Console.WriteLine($"Service '{s.Name}':");
+                    Console.WriteLine("----------------------------");
+                    Console.WriteLine($" {s.PID}");
+                    Console.WriteLine($" {s.Name}");
+                    Console.WriteLine($" {s.Description}");
+                    Console.WriteLine($" {s.Status}");
+                    Console.WriteLine($" {s.ImagePath}");
+                    Console.WriteLine($" {s.GroupName}");
+                    Console.WriteLine("----------------------------");
+                }
             }
             catch (Exception ex)
             {
@@ -24,20 +38,4 @@ namespace NativeDllTestApp
 
         }
     }
-
-    internal static class Import
-    {
-        public const string lib = "svcman.dll";
-    }
-
-    /// <summary>
-    /// http://msdn.microsoft.com/en-us/library/aa288468(VS.71).aspx
-    /// http://www.mono-project.com/docs/advanced/pinvoke/
-    /// </summary>
-    internal static class UnsafeNativeMethods
-    {
-        [DllImport(Import.lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int GetServiceList();
-    }
-
 }

@@ -1,0 +1,1 @@
+xcopy ..\x64\Debug\svcman.dll ..\NativeDllTestApp\bin\Debug\ /Y
