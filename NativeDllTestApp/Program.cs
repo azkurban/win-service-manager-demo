@@ -17,7 +17,7 @@ namespace NativeDllTestApp
                 //var count = NativeAPI.GetServiceListSize();
                 Console.WriteLine($"Service Count: { services?.Length ?? -1 }");
 
-                string[] array = new string[4] { "one", "two", "three", "four" };
+                string[] array = new string[] { "one", "two", "three", "four", "Раз", "два", "три" };
                 NativeAPI.SetStringArray(array);
                 Console.WriteLine($"The following strings were passed: {String.Join(", ", array)}");
 
@@ -25,6 +25,23 @@ namespace NativeDllTestApp
                 NativeAPI.GetStringArray(out results);
                 Console.WriteLine($"The following strings were received: {String.Join(", ", results)}");
 
+                MyStruct[] myStructs = new MyStruct[7];
+                int size = NativeAPI.SendArray(myStructs, 7);
+                Console.WriteLine($"myStruct sould bo of size: {size}");
+
+                if (myStructs == null)
+                    throw new NullReferenceException("myStructs IS NULL!");
+
+                foreach(var myStruct in myStructs)
+                {
+                    //Console.WriteLine($"myStruct.IntValue = {myStruct.IntValue}");
+                    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue}");
+                }
+
+
+                //string[] wstrings = null;
+                //NativeAPI.GetWStringArray(out wstrings);
+                //Console.WriteLine($"The following wide strings were received: {String.Join(", ", wstrings)}");
 
                 /**
                 foreach (var s in services)

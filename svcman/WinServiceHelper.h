@@ -16,6 +16,12 @@ struct ServiceProcess
     LPWSTR           Status;
 };
 
+typedef struct _MyStruct
+{
+    wchar_t* StringValue;
+    //int IntValue;
+} MyStruct;
+
 
 class WinServiceHelper
 {
@@ -54,5 +60,7 @@ void __stdcall SetStringArray(SAFEARRAY& safeArray);
 DLL_EXPORT_API
 void GetStringArray(SAFEARRAY*& pSafeArray);
 
+DLL_EXPORT_API
+int SendArray(MyStruct* arr, int recordsCount);
 
 

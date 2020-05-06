@@ -16,11 +16,14 @@ namespace NativeDllTestApp
         //[DllImport(DLL_LOCATION/*, CallingConvention = CallingConvention.Cdecl*/)]
         //internal static extern int GetServiceListSize();
 
-        [DllImport(DLL_LOCATION, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DLL_LOCATION, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern void SetStringArray([MarshalAs(UnmanagedType.SafeArray)] string[] array);
 
-        [DllImport(DLL_LOCATION, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DLL_LOCATION, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern void GetStringArray([MarshalAs(UnmanagedType.SafeArray)] out string[] array);
+
+        [DllImport(DLL_LOCATION, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SendArray([In, Out] MyStruct[] arr, int recordsCount);
 
     }
 }

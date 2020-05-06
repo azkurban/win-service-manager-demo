@@ -59,6 +59,7 @@ void GetServiceList(SAFEARRAY& services) {
 }
 
 std::vector<std::wstring> s_strings;
+MyStruct arr[];
 
 DLL_EXPORT_API
 void __stdcall SetStringArray(SAFEARRAY& safeArray)
@@ -83,6 +84,28 @@ void __stdcall SetStringArray(SAFEARRAY& safeArray)
         }
     }
 }
+
+DLL_EXPORT_API
+int SendArray(MyStruct* arr, int recordsCount) {
+    size_t size = s_strings.size();
+    
+    //arr = new MyStruct[recordsCount];
+    int stringSize = 255 * sizeof(wchar_t);
+
+    for (int i = 0; i < recordsCount; i++)
+    {
+        //BSTR item = SysAllocString(s_strings[i].c_str());
+
+        //arr[i].IntValue = i;
+        //arr[i].StringValue = SysAllocString(s_strings[i].c_str());
+
+         arr[i].StringValue = (wchar_t*)CoTaskMemAlloc(stringSize);
+         swprintf_s(arr[i].StringValue, 255, s_strings[i].c_str());
+    }
+
+    return size;
+}
+
 
 DLL_EXPORT_API
 void GetStringArray(SAFEARRAY*& pSafeArray)
@@ -111,6 +134,7 @@ void GetStringArray(SAFEARRAY*& pSafeArray)
         pSafeArray = nullptr;
     }
 }
+
 /**/
 
 

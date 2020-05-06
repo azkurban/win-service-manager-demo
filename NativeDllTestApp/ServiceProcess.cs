@@ -26,4 +26,12 @@ namespace NativeDllTestApp
         [MarshalAs(UnmanagedType.LPWStr)]
         public string Status;
     };
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct MyStruct
+    {
+        //[MarshalAs(UnmanagedType.LPWStr)]
+        public string StringValue;
+        //public int IntValue;
+    }
 }
