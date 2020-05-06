@@ -30,8 +30,8 @@ namespace NativeDllTestApp
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct MyStruct
     {
-        //[MarshalAs(UnmanagedType.LPWStr)]
+        public int IntValue;
         public string StringValue;
-        //public int IntValue;
+        public string StringValue2;
     }
 }

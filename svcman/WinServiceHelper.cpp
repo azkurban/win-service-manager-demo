@@ -90,19 +90,22 @@ int SendArray(MyStruct* arr, int recordsCount) {
     size_t size = s_strings.size();
     
     //arr = new MyStruct[recordsCount];
-    //int stringSize = 255 * sizeof(wchar_t);
+    int stringSize = 255 * sizeof(wchar_t);
 
     for (int i = 0; i < size; i++)
     {
         //BSTR item = SysAllocString(s_strings[i].c_str());
 
-        //arr[i].IntValue = i;
+        arr[i].IntValue = i;
         //arr[i].StringValue = SysAllocString(s_strings[i].c_str());
         auto wstr = s_strings[i];
         auto strSize = wstr.size()+1;
 
          arr[i].StringValue = (wchar_t*)CoTaskMemAlloc(strSize*sizeof(wchar_t));
          swprintf_s(arr[i].StringValue, strSize, wstr.c_str());
+
+         arr[i].StringValue2 = (wchar_t*)CoTaskMemAlloc(stringSize);
+         swprintf_s(arr[i].StringValue2, 255, L"NextVal%i", i);
     }
 
     return size;

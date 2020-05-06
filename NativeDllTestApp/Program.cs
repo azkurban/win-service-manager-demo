@@ -34,8 +34,9 @@ namespace NativeDllTestApp
 
                 foreach(var myStruct in myStructs)
                 {
-                    //Console.WriteLine($"myStruct.IntValue = {myStruct.IntValue}");
+                    Console.WriteLine($"myStruct.IntValue = {myStruct.IntValue}");
                     Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue}");
+                    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue2}");
                 }
 
 

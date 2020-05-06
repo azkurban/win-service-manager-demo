@@ -18,8 +18,9 @@ struct ServiceProcess
 
 typedef struct _MyStruct
 {
-    wchar_t* StringValue;
-    //int IntValue;
+   int IntValue;
+   wchar_t* StringValue;
+   wchar_t* StringValue2;
 } MyStruct;
 
 
