@@ -94,10 +94,8 @@ int SendArray(MyStruct* arr, int recordsCount) {
 
     for (int i = 0; i < size; i++)
     {
-        //BSTR item = SysAllocString(s_strings[i].c_str());
-
         arr[i].IntValue = i;
-        //arr[i].StringValue = SysAllocString(s_strings[i].c_str());
+
         auto wstr = s_strings[i];
         auto strSize = wstr.size()+1;
 

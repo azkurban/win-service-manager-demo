@@ -8,19 +8,19 @@
 
 struct ServiceProcess
 {
-    //int              PID;
-    LPWSTR           Name;
-    LPWSTR           Description;
-    LPWSTR           GroupName;
-    LPWSTR           ImagePath;
-    LPWSTR           Status;
+    int              PID;
+    BSTR           Name;
+    BSTR           Description;
+    BSTR           GroupName;
+    BSTR           ImagePath;
+    BSTR           Status;
 };
 
 typedef struct _MyStruct
 {
    int IntValue;
-   wchar_t* StringValue;
-   wchar_t* StringValue2;
+   BSTR StringValue;
+   BSTR StringValue2;
 } MyStruct;
 
 
