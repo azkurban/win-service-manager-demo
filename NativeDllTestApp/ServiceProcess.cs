@@ -9,7 +9,7 @@ namespace NativeDllTestApp
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct ServiceProcess
     {
-        public int PID;
+        public int ProcessId;
 
         //[MarshalAs(UnmanagedType.LPWStr)]
         public string Name;

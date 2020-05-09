@@ -10,7 +10,7 @@
 
 struct ServiceProcess
 {
-    int                     PID;
+    int                     ProcessId;
     ServiceString           Name;
     ServiceString           Description;
     ServiceString           GroupName;
@@ -55,7 +55,7 @@ int main()
        auto service = ServiceController{ s.ServiceName };
        auto config = service.GetServiceConfig();
 
-       sp.PID = 0;
+       sp.ProcessId = 0;
        sp.Name = s.ServiceName;
        sp.Description = s.DisplayName;
        sp.Status = ServiceStatusToString(static_cast<ServiceStatus>(s.Status.dwCurrentState));

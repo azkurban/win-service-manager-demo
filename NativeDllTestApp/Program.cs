@@ -48,7 +48,7 @@ namespace NativeDllTestApp
 
                 foreach (var svc in services)
                 {
-                    Console.WriteLine($"ServiceProcess.PID = {svc.PID}");
+                    Console.WriteLine($"ServiceProcess.ProcessId = {svc.ProcessId}");
                     Console.WriteLine($"ServiceProcess.Name = {svc.Name}");
                     Console.WriteLine($"ServiceProcess.Description = {svc.Description}");
                     Console.WriteLine($"ServiceProcess.ImagePath = {svc.ImagePath}");

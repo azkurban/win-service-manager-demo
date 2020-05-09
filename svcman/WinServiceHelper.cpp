@@ -34,7 +34,7 @@ void WinServiceHelper::ServiceList(ServiceProcess* services, size_t count)
         auto service = ServiceController{ ws.ServiceName };
         auto config = service.GetServiceConfig();
 
-        services[i].PID = i;
+        services[i].ProcessId = ws.Status.dwProcessId;
 
         CopyStrValue(ws.ServiceName, services[i].Name);
         CopyStrValue(ws.DisplayName, services[i].Description);

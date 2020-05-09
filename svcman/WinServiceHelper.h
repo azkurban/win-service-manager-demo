@@ -5,12 +5,12 @@
 
 typedef struct _ServiceProcess
 {
-    int              PID;
+    DWORD          ProcessId;
     BSTR           Name;
     BSTR           Description;
     BSTR           ImagePath;
     BSTR           Status;
-    //BSTR           GroupName;
+    //BSTR         GroupName;
 } ServiceProcess;
 
 typedef struct _MyStruct
