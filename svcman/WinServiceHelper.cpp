@@ -29,7 +29,6 @@ void WinServiceHelper::ServiceList(ServiceProcess* services, size_t count)
 
     for (size_t i = 0; i < size; i++) {
         auto ws = _winServices[i];
-        //auto sp = services[i];
 
         // open the service
         auto service = ServiceController{ ws.ServiceName };
@@ -38,20 +37,6 @@ void WinServiceHelper::ServiceList(ServiceProcess* services, size_t count)
         services[i].PID = i;
 
         CopyStrValue(ws.ServiceName, services[i].Name);
-
-        int size = ws.ServiceName.size() + 1;
-
-        //if (!ws.ServiceName.empty())
-        //{
-        //    //auto bs = SysAllocStringLen(svalue.data(), size);
-        //    services[i].Name = (wchar_t*)CoTaskMemAlloc(size * sizeof(wchar_t));
-        //    wmemcpy(services[i].Name, ws.ServiceName.c_str(), size);
-        //    //wcsncpy(target, svalue.c_str(), size - 1);
-
-        //    //swprintf_s(target, size, svalue.c_str());
-
-        //}
-
         CopyStrValue(ws.DisplayName, services[i].Description);
 
         auto status = ServiceStatusToString(static_cast<ServiceStatus>(ws.Status.dwCurrentState));
@@ -72,11 +57,10 @@ void  WinServiceHelper::CopyStrValue(std::wstring svalue, BSTR& target) {
 
     if (!svalue.empty())
     {
-        //auto bs = SysAllocStringLen(svalue.data(), size);
+        //target = SysAllocStringLen(svalue.data(), size);
+
         target = (wchar_t*)CoTaskMemAlloc(size * sizeof(wchar_t));
         wmemcpy(target, svalue.c_str(), size);
-        //wcsncpy(target, svalue.c_str(), size - 1);
-
         //swprintf_s(target, size, svalue.c_str());
 
     }
