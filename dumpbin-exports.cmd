@@ -1,0 +1,1 @@
+dumpbin /exports %1

@@ -158,12 +158,14 @@
     <ClInclude Include="..\ServiceLib\ServiceController.h" />
     <ClInclude Include="..\ServiceLib\ServiceEnumerator.h" />
     <ClInclude Include="..\ServiceLib\ServiceHandle.h" />
+    <ClInclude Include="dllExport.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WinServiceHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dllExport.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

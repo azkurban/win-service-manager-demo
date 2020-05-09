@@ -1,143 +1,62 @@
 #pragma once
 #include "pch.h"
+
 #include "WinServiceHelper.h"
+#include "ServiceController.h"
+#include "ServiceEnumerator.h"
 
-
+WinServiceHelper::WinServiceHelper()
+{
+    InitServiceList();
+}
 
 void WinServiceHelper::InitServiceList()
 {
     _winServices = ServiceEnumerator::EnumerateServices();
 }
 
-void WinServiceHelper::GetServiceList(ServiceProcess services[])
+WinServiceHelper::~WinServiceHelper()
 {
-    int size = _winServices.size();
+    for (auto s : _winServices)
+    {
+        delete &s;
+    }
+}
+
+void WinServiceHelper::ServiceList(ServiceProcess* services, size_t count)
+{
+    int size = min(_winServices.size(), count);
 
     for (int i = 0; i < size; i++) {
         auto ws = _winServices[i];
-
-        auto sp = ServiceProcess{};
+        auto sp = services[i];
 
         // open the service
         auto service = ServiceController{ ws.ServiceName };
         auto config = service.GetServiceConfig();
 
-        //std::wstring str = ws.ServiceName;
-        //LPWSTR str = const_cast<LPWSTR>(str.c_str());
+        sp.PID = 0;
 
-        sp.Name = const_cast<LPWSTR>(ws.ServiceName.c_str());
+        CopyStrValue(ws.ServiceName, sp.Name);
+        CopyStrValue(ws.DisplayName, sp.Description);
 
-        //sp.PID = 0;
-        sp.Name = const_cast<LPWSTR>(ws.ServiceName.c_str());
-        sp.Description = const_cast<LPWSTR>(ws.DisplayName.c_str());
+        auto status = ServiceStatusToString(static_cast<ServiceStatus>(ws.Status.dwCurrentState));
+        CopyStrValue(status, sp.Status);
 
-        std::wstring status = ServiceStatusToString(static_cast<ServiceStatus>(ws.Status.dwCurrentState));
-        sp.Status = const_cast<LPWSTR>(status.c_str());
-
-        std::wstring imagePath = config.GetBinaryPathName();
-        sp.ImagePath = const_cast<LPWSTR>(imagePath.c_str());
-
-        services[i] = sp;
+        auto path = config.GetBinaryPathName();
+        CopyStrValue(path, sp.ImagePath);
     }
 }
 
-//int WinServiceHelper::ServiceCount()
-//{
-//    return _winServices.size();
-//}
-
-//DLL_EXPORT_API
-//int GetServiceListSize() {
-//    auto helper = new WinServiceHelper();
-//    return helper->ServiceCount();
-//}
-
-DLL_EXPORT_API
-void GetServiceList(SAFEARRAY& services) {
-    auto helper = new WinServiceHelper();
-    //helper->GetServiceList(services);
-}
-
-std::vector<std::wstring> s_strings;
-MyStruct arr[];
-
-DLL_EXPORT_API
-void __stdcall SetStringArray(SAFEARRAY& safeArray)
+size_t WinServiceHelper::ServiceCount()
 {
-    s_strings.clear();
-    if (safeArray.cDims == 1)
-    {
-        if ((safeArray.fFeatures & FADF_BSTR) == FADF_BSTR)
-        {
-            BSTR* bstrArray;
-            HRESULT hr = SafeArrayAccessData(&safeArray, (void**)&bstrArray);
-
-            long iMin;
-            SafeArrayGetLBound(&safeArray, 1, &iMin);
-            long iMax;
-            SafeArrayGetUBound(&safeArray, 1, &iMax);
-
-            for (long i = iMin; i <= iMax; ++i)
-            {
-                s_strings.push_back(std::wstring(bstrArray[i]));
-            }
-        }
-    }
+    return _winServices.size();
 }
 
-DLL_EXPORT_API
-int SendArray(MyStruct* arr, int recordsCount) {
-    size_t size = s_strings.size();
-    
-    //arr = new MyStruct[recordsCount];
-    int stringSize = 255 * sizeof(wchar_t);
-
-    for (int i = 0; i < size; i++)
-    {
-        arr[i].IntValue = i;
-
-        auto wstr = s_strings[i];
-        auto strSize = wstr.size()+1;
-
-         arr[i].StringValue = (wchar_t*)CoTaskMemAlloc(strSize*sizeof(wchar_t));
-         swprintf_s(arr[i].StringValue, strSize, wstr.c_str());
-
-         arr[i].StringValue2 = (wchar_t*)CoTaskMemAlloc(stringSize);
-         swprintf_s(arr[i].StringValue2, 255, L"NextVal%i", i);
-    }
-
-    return size;
+void  WinServiceHelper::CopyStrValue(std::wstring svalue, BSTR target) {
+    auto size = svalue.size() + 1;
+    target = (wchar_t*)CoTaskMemAlloc(size * sizeof(wchar_t));
+    swprintf_s(target, size, svalue.c_str());
 }
-
-
-DLL_EXPORT_API
-void GetStringArray(SAFEARRAY*& pSafeArray)
-{
-    if (s_strings.size() > 0)
-    {
-        SAFEARRAYBOUND  Bound;
-        Bound.lLbound = 0;
-        Bound.cElements = s_strings.size();
-
-        pSafeArray = SafeArrayCreate(VT_BSTR, 1, &Bound);
-
-        BSTR* pData;
-        HRESULT hr = SafeArrayAccessData(pSafeArray, (void**)&pData);
-        if (SUCCEEDED(hr))
-        {
-            for (DWORD i = 0; i < s_strings.size(); i++)
-            {
-                *pData++ = SysAllocString(s_strings[i].c_str());
-            }
-            SafeArrayUnaccessData(pSafeArray);
-        }
-    }
-    else
-    {
-        pSafeArray = nullptr;
-    }
-}
-
-/**/
 
 

@@ -12,10 +12,10 @@ namespace NativeDllTestApp
             try
             {
 
-                ServiceProcess[] services = null;
-                //NativeAPI.GetServiceList(out services);
-                //var count = NativeAPI.GetServiceListSize();
-                Console.WriteLine($"Service Count: { services?.Length ?? -1 }");
+                //ServiceProcess[] services = null;
+                ////NativeAPI.GetServiceList(out services);
+                ////var count = NativeAPI.GetServiceListSize();
+                //Console.WriteLine($"Service Count: { services?.Length ?? -1 }");
 
                 string[] array = new string[] { "one", "two", "three", "four", "Раз", "два", "три" };
                 NativeAPI.SetStringArray(array);
@@ -29,8 +29,8 @@ namespace NativeDllTestApp
                 int size = NativeAPI.SendArray(myStructs, 7);
                 Console.WriteLine($"myStruct sould bo of size: {size}");
 
-                if (myStructs == null)
-                    throw new NullReferenceException("myStructs IS NULL!");
+                //if (myStructs == null)
+                //    throw new NullReferenceException("myStructs IS NULL!");
 
                 foreach(var myStruct in myStructs)
                 {
@@ -39,6 +39,22 @@ namespace NativeDllTestApp
                     Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue2}");
                 }
 
+                ulong count = NativeAPI.ServiceCount();
+
+                var services = new ServiceProcess[count];
+                Console.WriteLine($"ServiceProcess should be of size: {count}");
+
+                NativeAPI.ServiceList(services, count);
+
+                foreach (var svc in services)
+                {
+                    Console.WriteLine($"ServiceProcess.PID = {svc.PID}");
+                    Console.WriteLine($"ServiceProcess.Name = {svc.Name}");
+                    Console.WriteLine($"ServiceProcess.Description = {svc.Description}");
+                    Console.WriteLine($"ServiceProcess.ImagePath = {svc.ImagePath}");
+                    Console.WriteLine($"ServiceProcess.Status = {svc.Status}");
+                    Console.WriteLine($"ServiceProcess.GroupName = {svc.GroupName}");
+                }
 
                 //string[] wstrings = null;
                 //NativeAPI.GetWStringArray(out wstrings);

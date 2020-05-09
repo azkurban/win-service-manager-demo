@@ -18,6 +18,9 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include <vector>
+#include <string>
+
 // Windows Header Files:
 #include <windows.h>
 

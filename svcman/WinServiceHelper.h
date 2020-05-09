@@ -1,20 +1,17 @@
 #pragma once
-
-#define DLL_EXPORT_API extern "C" __declspec(dllexport)
+#include<vector>
 
 #include "OleAuto.h"
-#include "ServiceController.h"
-#include "ServiceEnumerator.h"
 
-struct ServiceProcess
+typedef struct _ServiceProcess
 {
     int              PID;
     BSTR           Name;
     BSTR           Description;
-    BSTR           GroupName;
     BSTR           ImagePath;
     BSTR           Status;
-};
+    BSTR           GroupName;
+} ServiceProcess;
 
 typedef struct _MyStruct
 {
@@ -23,45 +20,22 @@ typedef struct _MyStruct
    BSTR StringValue2;
 } MyStruct;
 
+extern struct ServiceStatusProcess;
+
 
 class WinServiceHelper
 {
 private:
     std::vector<ServiceStatusProcess> _winServices;
     void InitServiceList();
-
-    static WinServiceHelper* _instance;
+    void CopyStrValue(std::wstring svalue, BSTR target);
 
 public:
-    WinServiceHelper() 
-    {
-        InitServiceList();
-    }
-    static WinServiceHelper* GetInstanse() {
-        if (!_instance) {
-            _instance = new WinServiceHelper();
-        }
-        _instance->InitServiceList();
-        return _instance;
-    }
+    WinServiceHelper();
+    ~WinServiceHelper();
 
-    void GetServiceList(ServiceProcess services[]);
-    //int ServiceCount();
+    void ServiceList(ServiceProcess* services, size_t count);
+    size_t ServiceCount();
 };
-
-//DLL_EXPORT_API
-//int GetServiceListSize();
-
-DLL_EXPORT_API
-void GetServiceList(SAFEARRAY& services);
-
-DLL_EXPORT_API
-void __stdcall SetStringArray(SAFEARRAY& safeArray);
-
-DLL_EXPORT_API
-void GetStringArray(SAFEARRAY*& pSafeArray);
-
-DLL_EXPORT_API
-int SendArray(MyStruct* arr, int recordsCount);
 
 
