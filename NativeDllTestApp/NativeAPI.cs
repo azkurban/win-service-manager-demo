@@ -11,10 +11,10 @@ namespace NativeDllTestApp
         private const string DLL_LOCATION = "svcman.dll";
 
         [DllImport(DLL_LOCATION, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ServiceList([In, Out] ServiceProcess[] services, ulong count);
-
-        [DllImport(DLL_LOCATION, CallingConvention = CallingConvention.Cdecl)]
         public static extern ulong ServiceCount();
+       
+        [DllImport(DLL_LOCATION, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ServiceList([In, Out] ServiceProcess[] services, ulong count);
 
 
         [DllImport(DLL_LOCATION, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]

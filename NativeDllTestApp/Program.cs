@@ -32,12 +32,12 @@ namespace NativeDllTestApp
                 //if (myStructs == null)
                 //    throw new NullReferenceException("myStructs IS NULL!");
 
-                foreach(var myStruct in myStructs)
-                {
-                    Console.WriteLine($"myStruct.IntValue = {myStruct.IntValue}");
-                    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue}");
-                    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue2}");
-                }
+                //foreach(var myStruct in myStructs)
+                //{
+                //    Console.WriteLine($"myStruct.IntValue = {myStruct.IntValue}");
+                //    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue}");
+                //    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue2}");
+                //}
 
                 ulong count = NativeAPI.ServiceCount();
 
@@ -53,7 +53,7 @@ namespace NativeDllTestApp
                     Console.WriteLine($"ServiceProcess.Description = {svc.Description}");
                     Console.WriteLine($"ServiceProcess.ImagePath = {svc.ImagePath}");
                     Console.WriteLine($"ServiceProcess.Status = {svc.Status}");
-                    Console.WriteLine($"ServiceProcess.GroupName = {svc.GroupName}");
+                    //Console.WriteLine($"ServiceProcess.GroupName = {svc.GroupName}");
                 }
 
                 //string[] wstrings = null;

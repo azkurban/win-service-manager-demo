@@ -10,7 +10,7 @@ typedef struct _ServiceProcess
     BSTR           Description;
     BSTR           ImagePath;
     BSTR           Status;
-    BSTR           GroupName;
+    //BSTR           GroupName;
 } ServiceProcess;
 
 typedef struct _MyStruct
@@ -28,7 +28,7 @@ class WinServiceHelper
 private:
     std::vector<ServiceStatusProcess> _winServices;
     void InitServiceList();
-    void CopyStrValue(std::wstring svalue, BSTR target);
+    void CopyStrValue(std::wstring svalue, BSTR& target);
 
 public:
     WinServiceHelper();

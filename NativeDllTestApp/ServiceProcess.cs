@@ -13,18 +13,10 @@ namespace NativeDllTestApp
 
         //[MarshalAs(UnmanagedType.LPWStr)]
         public string Name;
-
-        //[MarshalAs(UnmanagedType.LPWStr)]
         public string Description;
-
-        //[MarshalAs(UnmanagedType.LPWStr)]
         public string ImagePath;
-
-        //[MarshalAs(UnmanagedType.LPWStr)]
         public string Status;
-
-        //[MarshalAs(UnmanagedType.LPWStr)]
-        public string GroupName;
+        //public string GroupName;
     };
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]

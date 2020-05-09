@@ -23,7 +23,7 @@ DLL_EXPORT_API
 void ServiceList(ServiceProcess* services, size_t count) 
 {
     _serviceHelper->ServiceList(services, count);
-    delete _serviceHelper;
+    //delete _serviceHelper;
 }
 
 
@@ -66,10 +66,14 @@ int SendArray(MyStruct* arr, int recordsCount) {
         auto strSize = wstr.size() + 1;
 
         arr[i].StringValue = (wchar_t*)CoTaskMemAlloc(strSize * sizeof(wchar_t));
-        swprintf_s(arr[i].StringValue, strSize, wstr.c_str());
+        //swprintf_s(arr[i].StringValue, strSize, wstr.c_str());
+        wmemcpy(arr[i].StringValue, wstr.c_str(), strSize);
+
 
         arr[i].StringValue2 = (wchar_t*)CoTaskMemAlloc(stringSize);
         swprintf_s(arr[i].StringValue2, 255, L"NextVal%i", i);
+        //wmemcpy(arr[i].StringValue2, L"NextVal%i", (L"NextVal%i").size());
+
     }
 
     return size;
