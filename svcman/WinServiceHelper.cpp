@@ -15,13 +15,7 @@ void WinServiceHelper::InitServiceList()
     _winServices = ServiceEnumerator::EnumerateServices();
 }
 
-WinServiceHelper::~WinServiceHelper()
-{
-    for (auto s : _winServices)
-    {
-        delete &s;
-    }
-}
+WinServiceHelper::~WinServiceHelper() {}
 
 void WinServiceHelper::ServiceList(ServiceProcess* services, size_t count)
 {
