@@ -43,10 +43,12 @@ namespace NativeDllTestApp
 
                 var services = new ServiceProcess[svcCount];
                 Console.WriteLine($"ServiceProcess should be of size: {svcCount}");
+                Console.WriteLine();
 
                 NativeAPI.ServiceList(services, svcCount);
 
-                int count = (int)(svcCount > 10 ? 10 : svcCount);
+                int count = (int)(svcCount > 10 ? svcCount : svcCount);
+
                 for (int i = 0; i < count; i++)
                 {
                     var svc = services[i];
@@ -57,6 +59,7 @@ namespace NativeDllTestApp
                     Console.WriteLine($"ServiceProcess.ImagePath = {svc.ImagePath}");
                     Console.WriteLine($"ServiceProcess.Status = {svc.Status}");
                     //Console.WriteLine($"ServiceProcess.GroupName = {svc.GroupName}");
+                    Console.WriteLine();
                 }
 
                 //string[] wstrings = null;
