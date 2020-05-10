@@ -17,17 +17,17 @@ namespace NativeDllTestApp
                 ////var count = NativeAPI.GetServiceListSize();
                 //Console.WriteLine($"Service Count: { services?.Length ?? -1 }");
 
-                string[] array = new string[] { "one", "two", "three", "four", "Раз", "два", "три" };
-                NativeAPI.SetStringArray(array);
-                Console.WriteLine($"The following strings were passed: {String.Join(", ", array)}");
+                //string[] array = new string[] { "one", "two", "three", "four", "Раз", "два", "три" };
+                //NativeAPI.SetStringArray(array);
+                //Console.WriteLine($"The following strings were passed: {String.Join(", ", array)}");
 
-                string[] results = null;
-                NativeAPI.GetStringArray(out results);
-                Console.WriteLine($"The following strings were received: {String.Join(", ", results)}");
+                //string[] results = null;
+                //NativeAPI.GetStringArray(out results);
+                //Console.WriteLine($"The following strings were received: {String.Join(", ", results)}");
 
-                MyStruct[] myStructs = new MyStruct[7];
-                int size = NativeAPI.SendArray(myStructs, 7);
-                Console.WriteLine($"myStruct sould bo of size: {size}");
+                //MyStruct[] myStructs = new MyStruct[7];
+                //int size = NativeAPI.SendArray(myStructs, 7);
+                //Console.WriteLine($"myStruct sould bo of size: {size}");
 
                 //if (myStructs == null)
                 //    throw new NullReferenceException("myStructs IS NULL!");
@@ -39,15 +39,18 @@ namespace NativeDllTestApp
                 //    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue2}");
                 //}
 
-                ulong count = NativeAPI.ServiceCount();
+                ulong svcCount = NativeAPI.ServiceCount();
 
-                var services = new ServiceProcess[count];
-                Console.WriteLine($"ServiceProcess should be of size: {count}");
+                var services = new ServiceProcess[svcCount];
+                Console.WriteLine($"ServiceProcess should be of size: {svcCount}");
 
-                NativeAPI.ServiceList(services, count);
+                NativeAPI.ServiceList(services, svcCount);
 
-                foreach (var svc in services)
+                int count = (int)(svcCount > 10 ? 10 : svcCount);
+                for (int i = 0; i < count; i++)
                 {
+                    var svc = services[i];
+
                     Console.WriteLine($"ServiceProcess.ProcessId = {svc.ProcessId}");
                     Console.WriteLine($"ServiceProcess.Name = {svc.Name}");
                     Console.WriteLine($"ServiceProcess.Description = {svc.Description}");
