@@ -8,7 +8,7 @@ namespace NativeDllTestApp
     /// </summary>
     internal static class NativeAPI
     {
-        private const string DLL_LOCATION = @"x64\svcman.dll";
+        private const string DLL_LOCATION = @"x86\svcman.dll";
 
         [DllImport(DLL_LOCATION, CallingConvention = CallingConvention.Cdecl)]
         public static extern ulong ServiceCount();
