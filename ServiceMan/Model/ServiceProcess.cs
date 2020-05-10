@@ -9,10 +9,10 @@ namespace ServiceMan.Model
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     internal struct ServiceProcess
     {
-        public int ProcessId;
-        public string Name;
-        public string Description;
-        public string ImagePath;
-        public string Status;
+        public int ProcessId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ImagePath { get; set; }
+        public string Status { get; set; }
     };
 }

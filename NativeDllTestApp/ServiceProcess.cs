@@ -9,13 +9,11 @@ namespace NativeDllTestApp
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct ServiceProcess
     {
-        public int ProcessId;
-
-        //[MarshalAs(UnmanagedType.LPWStr)]
-        public string Name;
-        public string Description;
-        public string ImagePath;
-        public string Status;
+        public int ProcessId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ImagePath { get; set; }
+        public string Status { get; set; }
         //public string GroupName;
     };
 
