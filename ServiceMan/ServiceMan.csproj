@@ -49,6 +49,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\NativeAPI.cs" />
+    <Compile Include="Model\ServiceProcess.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,8 +88,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Services\" />
     <Folder Include="ViewModel\" />
     <Folder Include="View\" />
   </ItemGroup>
