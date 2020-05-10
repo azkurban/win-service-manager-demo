@@ -24,6 +24,7 @@ void ServiceList(ServiceProcess* services, size_t count)
 {
     _serviceHelper->ServiceList(services, count);
     delete _serviceHelper;
+    _serviceHelper = NULL;
 }
 
 
