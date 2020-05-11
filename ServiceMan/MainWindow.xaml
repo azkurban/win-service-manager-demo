@@ -1,11 +1,15 @@
-﻿<Window x:Class="ServiceMan.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ServiceMan"
+        xmlns:ViewModel="clr-namespace:ServiceMan.ViewModel" x:Class="ServiceMan.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="serviceDataSourceViewSource" d:DesignSource="{d:DesignInstance {x:Type ViewModel:ServiceDataSource}}"/>
+    </Window.Resources>
 
     <DockPanel>
         <Menu Height="20" DockPanel.Dock="Top">
@@ -16,28 +20,90 @@
 
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <TextBlock Padding="5" x:Name="StocksStatus">No data loaded</TextBlock>
+                <TextBlock Padding="5" x:Name="StocksStatus"><Run Text="No data loaded"/></TextBlock>
             </StatusBarItem>
             <StatusBarItem>
-                <ProgressBar x:Name="StockProgress" Width="200" Height="15" Visibility="Hidden"></ProgressBar>
+                <ProgressBar x:Name="StockProgress" Width="200" Height="15" Visibility="Hidden"/>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Padding="5">
-                </TextBlock>
+                <TextBlock Padding="5"/>
             </StatusBarItem>
         </StatusBar>
 
 
         <GroupBox Padding="5">
-            <GroupBox.Header>Stock Data</GroupBox.Header>
-            <!--<DataGrid x:Name="Stocks"></DataGrid>-->
-            <Grid>
-                <Grid HorizontalAlignment="Left" Height="341.515" Margin="10,38.659,0,0" VerticalAlignment="Top" Width="772"/>
+            <GroupBox.Header>Services</GroupBox.Header>
+            <!--<ListView HorizontalAlignment="Left" Height="340" Margin="-5,0,-5,-6" VerticalAlignment="Top" Width="780">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn/>
+                    </GridView>
+                </ListView.View>
+            </ListView>-->
+
+            <ListView x:Name="ServiceListView" HorizontalAlignment="Left" Height="340" Margin="-5,0,-5,-6" VerticalAlignment="Top" Width="780" DisplayMemberPath="Description" ItemsSource="{Binding Source={StaticResource serviceDataSourceViewSource}}" SelectedValuePath="Description" SelectionMode="Single">
+
+                <ListView.View>
+
+                    <GridView AllowsColumnReorder="false"
+              ColumnHeaderToolTip="Service Information">
 
 
+                        <GridViewColumn DisplayMemberBinding=
+                          "{Binding Name, BindsDirectlyToSource=True}" 
+                      Header="Name" Width="100">
+                            <!--<GridViewColumn.ContextMenu>
+                                    <ContextMenu  MenuItem.Click="LastNameCM_Click"  
+                                        Name="LastNameCM">
+                                        <MenuItem Header="Ascending" />
+                                        <MenuItem Header="Descending" />
+                                    </ContextMenu>
+                                </GridViewColumn.ContextMenu>-->
 
-            </Grid>
+                        </GridViewColumn>
 
+                        <GridViewColumn DisplayMemberBinding=
+                          "{Binding PID}" 
+                      Header="PID" Width="100"/>
+
+
+                        <GridViewColumn DisplayMemberBinding=
+                          "{Binding Description}" 
+                      Header="Description" Width="100"/>
+
+                        <GridViewColumn DisplayMemberBinding=
+                          "{Binding Status}" 
+                      Header="Status" Width="100"/>
+
+                        <GridViewColumn DisplayMemberBinding=
+                          "{Binding Group}" 
+                      Header="Group" Width="100"/>
+
+                        <GridViewColumn DisplayMemberBinding=
+                          "{Binding ImagePath}" 
+                      Header="Image Path" Width="300"/>
+
+                        <!--<GridViewColumn DisplayMemberBinding=
+                          "{Binding Path=ImagePath}" 
+                      Width="100">
+                            <GridViewColumnHeader>Image Path
+                                <GridViewColumnHeader.ContextMenu>
+                                    <ContextMenu  MenuItem.Click="LastNameCM_Click"  
+                                        Name="LastNameCM">
+                                        <MenuItem Header="Ascending" />
+                                        <MenuItem Header="Descending" />
+                                    </ContextMenu>
+                                </GridViewColumnHeader.ContextMenu>
+                            </GridViewColumnHeader>
+                        </GridViewColumn>-->
+
+                    </GridView>
+
+                </ListView.View>
+                <ListView.DataContext>
+                    <ViewModel:ServiceDataSource/>
+                </ListView.DataContext>
+            </ListView>
 
         </GroupBox>
 

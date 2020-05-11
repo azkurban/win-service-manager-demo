@@ -51,6 +51,8 @@
     </ApplicationDefinition>
     <Compile Include="Services\NativeAPI.cs" />
     <Compile Include="Model\ServiceProcess.cs" />
+    <Compile Include="Services\ServiceDataProvider.cs" />
+    <Compile Include="ViewModel\ServiceDataSource.cs" />
     <Compile Include="ViewModel\ServiceModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -83,7 +85,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Properties\DataSources\ServiceMan.ViewModel.ServiceModel.datasource" />
+    <None Include="Properties\DataSources\ServiceMan.ViewModel.ServiceDataSource.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

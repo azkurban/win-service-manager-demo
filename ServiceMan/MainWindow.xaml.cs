@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ServiceMan.Services;
+using ServiceMan.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,9 @@ namespace ServiceMan
         public MainWindow()
         {
             InitializeComponent();
+
+            ServiceDataSource dataContext = (new ServiceDataProvider()).GetMockData();
+            ServiceListView.DataContext = dataContext;
         }
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
@@ -29,5 +34,18 @@ namespace ServiceMan
             Application.Current.Shutdown();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Data.CollectionViewSource serviceDataSourceViewSource = 
+                ((System.Windows.Data.CollectionViewSource)(this.FindResource("serviceDataSourceViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+
+            //ServiceDataSource dataContext = (new ServiceDataProvider()).GetMockData();
+            ServiceDataSource dataContext = (new ServiceDataProvider()).GetData();
+            serviceDataSourceViewSource.Source = dataContext;
+            //ServiceListView.DataContext = dataContext;
+
+        }
     }
 }
