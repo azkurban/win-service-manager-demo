@@ -27,17 +27,21 @@
             </StatusBarItem>
         </StatusBar>
 
-        <Grid>
-            <Grid HorizontalAlignment="Left" Height="341.515" Margin="10,38.659,0,0" VerticalAlignment="Top" Width="772"/>
-            
-            <GroupBox Padding="5">
-                <GroupBox.Header>Stock Data</GroupBox.Header>
-                <!--<DataGrid x:Name="Stocks"></DataGrid>-->
-            </GroupBox>
+
+        <GroupBox Padding="5">
+            <GroupBox.Header>Stock Data</GroupBox.Header>
+            <!--<DataGrid x:Name="Stocks"></DataGrid>-->
+            <Grid>
+                <Grid HorizontalAlignment="Left" Height="341.515" Margin="10,38.659,0,0" VerticalAlignment="Top" Width="772"/>
 
 
 
-        </Grid>
+            </Grid>
+
+
+        </GroupBox>
+
+
 
 
     </DockPanel>
