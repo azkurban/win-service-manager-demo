@@ -6,8 +6,40 @@
         xmlns:local="clr-namespace:ServiceMan"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid HorizontalAlignment="Left" Height="341.515" Margin="10,38.659,0,0" VerticalAlignment="Top" Width="772"/>
 
-    </Grid>
+    <DockPanel>
+        <Menu Height="20" DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="Close" Header="_Close" Click="Close_OnClick"/>
+            </MenuItem>
+        </Menu>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Padding="5" x:Name="StocksStatus">No data loaded</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <ProgressBar x:Name="StockProgress" Width="200" Height="15" Visibility="Hidden"></ProgressBar>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock Padding="5">
+                </TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid>
+            <Grid HorizontalAlignment="Left" Height="341.515" Margin="10,38.659,0,0" VerticalAlignment="Top" Width="772"/>
+            
+            <GroupBox Padding="5">
+                <GroupBox.Header>Stock Data</GroupBox.Header>
+                <!--<DataGrid x:Name="Stocks"></DataGrid>-->
+            </GroupBox>
+
+
+
+        </Grid>
+
+
+    </DockPanel>
+
 </Window>

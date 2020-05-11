@@ -23,5 +23,11 @@ namespace ServiceMan
         {
             InitializeComponent();
         }
+
+        private void Close_OnClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
     }
 }

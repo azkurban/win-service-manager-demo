@@ -51,6 +51,7 @@
     </ApplicationDefinition>
     <Compile Include="Services\NativeAPI.cs" />
     <Compile Include="Model\ServiceProcess.cs" />
+    <Compile Include="ViewModel\ServiceModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -88,7 +89,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModel\" />
     <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
