@@ -53,7 +53,8 @@
     <Compile Include="Model\ServiceProcess.cs" />
     <Compile Include="Services\ServiceDataProvider.cs" />
     <Compile Include="ViewModel\ServiceDataSource.cs" />
-    <Compile Include="ViewModel\ServiceModel.cs" />
+    <Compile Include="ViewModel\ServiceListViewModel.cs" />
+    <Compile Include="ViewModel\ServiceViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

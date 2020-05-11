@@ -25,7 +25,7 @@ namespace ServiceMan.Services
                 string group = ParseImagePath(svcInfo.ImagePath, out imagePath);
 
 
-                dataSource.Add(new ServiceModel
+                dataSource.Add(new ServiceViewModel
                 {
                     PID = svcInfo.ProcessId == 0 ? string.Empty : svcInfo.ProcessId.ToString(),
                     Name = svcInfo.Name,
@@ -65,7 +65,7 @@ namespace ServiceMan.Services
         {
             var data = new ServiceDataSource();
 
-            data.Add(new ServiceModel
+            data.Add(new ServiceViewModel
             {
                 PID = "",
                 Name = @"wmiApSrv",
@@ -75,7 +75,7 @@ namespace ServiceMan.Services
 
             });
 
-            data.Add(new ServiceModel
+            data.Add(new ServiceViewModel
             {
                 PID = "",
                 Name = @"WMPNetworkSvc",
@@ -84,7 +84,7 @@ namespace ServiceMan.Services
                 Status = @"Stopped"
             });
 
-            data.Add(new ServiceModel
+            data.Add(new ServiceViewModel
             {
                 PID = "",
                 Name = @"Wof",
@@ -93,7 +93,7 @@ namespace ServiceMan.Services
                 Status = @"Running"
             });
 
-            data.Add(new ServiceModel
+            data.Add(new ServiceViewModel
             {
 
                 PID = "4204",
@@ -103,7 +103,7 @@ namespace ServiceMan.Services
                 Status = @"Running"
             });
 
-            data.Add(new ServiceModel
+            data.Add(new ServiceViewModel
             {
                 PID = "5732",
                 Name = @"wscsvc",

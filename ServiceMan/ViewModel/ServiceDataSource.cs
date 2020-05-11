@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ServiceMan.ViewModel
 {
-    internal class ServiceDataSource : ObservableCollection<ServiceModel>
+    internal class ServiceDataSource : ObservableCollection<ServiceViewModel>
     {
     }
 }

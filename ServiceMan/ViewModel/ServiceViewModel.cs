@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ServiceMan.ViewModel
 {
-    internal class ServiceModel
+    internal class ServiceViewModel
     {
         public string PID { get; set; }
         public string Name { get; set; }

@@ -6,9 +6,16 @@
         xmlns:local="clr-namespace:ServiceMan"
         xmlns:ViewModel="clr-namespace:ServiceMan.ViewModel" x:Class="ServiceMan.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="MainWindow" Height="450" Width="939" Loaded="Window_Loaded">
     <Window.Resources>
         <CollectionViewSource x:Key="serviceDataSourceViewSource" d:DesignSource="{d:DesignInstance {x:Type ViewModel:ServiceDataSource}}"/>
+        <!--<ContextMenu  MenuItem.Click="ServiceControl_Click"  
+                                        x:Key="ServiceControl">
+            <MenuItem Header="Start" />
+            <MenuItem Header="Stop" />
+            <MenuItem Header="Restart" />
+        </ContextMenu>-->
+
     </Window.Resources>
 
     <DockPanel>
@@ -23,7 +30,7 @@
                 <TextBlock Padding="5" x:Name="StocksStatus"><Run Text="No data loaded"/></TextBlock>
             </StatusBarItem>
             <StatusBarItem>
-                <ProgressBar x:Name="StockProgress" Width="200" Height="15" Visibility="Hidden"/>
+                <ProgressBar x:Name="ServiceProgress" Width="200" Height="15" Visibility="Hidden"/>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <TextBlock Padding="5"/>
@@ -41,17 +48,26 @@
                 </ListView.View>
             </ListView>-->
 
-            <ListView x:Name="ServiceListView" HorizontalAlignment="Left" Height="340" Margin="-5,0,-5,-6" VerticalAlignment="Top" Width="780" DisplayMemberPath="Description" ItemsSource="{Binding Source={StaticResource serviceDataSourceViewSource}}" SelectedValuePath="Description" SelectionMode="Single">
+            <ListView x:Name="serviceListView" HorizontalAlignment="Left" Height="340" Margin="-5,0,-5,-6" VerticalAlignment="Top" Width="922" DisplayMemberPath="Description" ItemsSource="{Binding Source={StaticResource serviceDataSourceViewSource}}" SelectedValuePath="Description" SelectionMode="Single" MouseRightButtonUp="ServiceListView_MouseRightButtonUp">
+
+                <!--context  Menu-->
+                <ListView.ContextMenu>
+                    <ContextMenu Name="ZoneIformationList" StaysOpen="true" Background="WhiteSmoke">
+                        <ContextMenu.BitmapEffect>
+                            <BitmapEffectGroup/>
+                        </ContextMenu.BitmapEffect>
+                        <MenuItem Header="Start" Name="mnuItem_Start" Click="mnuItem_Start_Click" />
+                        <MenuItem Header="Stop" Name="mnuItem_Stop" Click="mnuItem_Stop_Click" />
+                        <MenuItem Header="Restart" Name="mnuItem_Restart" Click="mnuItem_Restart_Click" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+
 
                 <ListView.View>
-
-                    <GridView AllowsColumnReorder="false"
-              ColumnHeaderToolTip="Service Information">
-
-
+                    <GridView x:Name="ServiceGridView" AllowsColumnReorder="false" ColumnHeaderToolTip="Service Information">
                         <GridViewColumn DisplayMemberBinding=
                           "{Binding Name, BindsDirectlyToSource=True}" 
-                      Header="Name" Width="100">
+                      Header="Name" >
                             <!--<GridViewColumn.ContextMenu>
                                     <ContextMenu  MenuItem.Click="LastNameCM_Click"  
                                         Name="LastNameCM">
@@ -64,24 +80,24 @@
 
                         <GridViewColumn DisplayMemberBinding=
                           "{Binding PID}" 
-                      Header="PID" Width="100"/>
+                      Header="PID" />
 
 
                         <GridViewColumn DisplayMemberBinding=
                           "{Binding Description}" 
-                      Header="Description" Width="100"/>
+                      Header="Description" />
 
                         <GridViewColumn DisplayMemberBinding=
                           "{Binding Status}" 
-                      Header="Status" Width="100"/>
+                      Header="Status" />
 
                         <GridViewColumn DisplayMemberBinding=
                           "{Binding Group}" 
-                      Header="Group" Width="100"/>
+                      Header="Group" />
 
                         <GridViewColumn DisplayMemberBinding=
                           "{Binding ImagePath}" 
-                      Header="Image Path" Width="300"/>
+                      Header="Image Path" />
 
                         <!--<GridViewColumn DisplayMemberBinding=
                           "{Binding Path=ImagePath}" 
@@ -98,7 +114,6 @@
                         </GridViewColumn>-->
 
                     </GridView>
-
                 </ListView.View>
                 <ListView.DataContext>
                     <ViewModel:ServiceDataSource/>
