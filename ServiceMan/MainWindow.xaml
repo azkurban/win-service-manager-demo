@@ -48,7 +48,7 @@
                 </ListView.View>
             </ListView>-->
 
-            <ListView x:Name="serviceListView" HorizontalAlignment="Left" Height="340" Margin="-5,0,-5,-6" VerticalAlignment="Top" Width="922" DisplayMemberPath="Description" ItemsSource="{Binding Source={StaticResource serviceDataSourceViewSource}}" SelectedValuePath="Description" SelectionMode="Single" MouseRightButtonUp="ServiceListView_MouseRightButtonUp">
+            <ListView x:Name="serviceListView" HorizontalAlignment="Left" Height="340" Margin="-5,0,-5,-6" VerticalAlignment="Top" Width="922" DisplayMemberPath="Description" ItemsSource="{Binding Source={StaticResource serviceDataSourceViewSource}}" SelectedValuePath="Description" SelectionMode="Single" MouseRightButtonUp="ServiceListView_MouseRightButtonUp" Visibility="Hidden" ContextMenuOpening="serviceListView_ContextMenuOpening">
 
                 <!--context  Menu-->
                 <ListView.ContextMenu>

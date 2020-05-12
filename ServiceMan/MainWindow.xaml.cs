@@ -59,7 +59,7 @@ namespace ServiceMan
             _serviceDataSourceViewSource =
                 ((System.Windows.Data.CollectionViewSource)(this.FindResource("serviceDataSourceViewSource")));
 
-            if(!_backgroundWorker.IsBusy)
+            if (!_backgroundWorker.IsBusy)
             {
                 StocksStatus.Text = "Loading data, please wait...";
                 _backgroundWorker.RunWorkerAsync();
@@ -73,6 +73,7 @@ namespace ServiceMan
                 // Load data by setting the CollectionViewSource.Source property:
 
                 _serviceDataSourceViewSource.Source = _dataContext;
+                serviceListView.Visibility = Visibility.Visible;
                 StocksStatus.Text = $"Loaded data in {_watch.ElapsedMilliseconds}ms";
                 ServiceProgress.Visibility = Visibility.Hidden;
             }
@@ -83,7 +84,7 @@ namespace ServiceMan
                 string caption = "Load data Error";
                 MessageBoxButton buttons = MessageBoxButton.OK;
                 MessageBoxImage icon = MessageBoxImage.Error;
-                
+
                 // Show message box
                 MessageBoxResult result = MessageBox.Show(message, caption, buttons, icon);
 
@@ -106,7 +107,7 @@ namespace ServiceMan
             if (serviceListView.SelectedIndex > -1)
             {
                 var service = (ServiceViewModel)serviceListView.SelectedItem; // casting the list view
-                MessageBox.Show($"Request to Start service:'{service.Name}'", "Nutrition", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Request to Start service:'{service.Name}'", "Service Item Context Menu Test", MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
         }
@@ -116,7 +117,7 @@ namespace ServiceMan
             if (serviceListView.SelectedIndex > -1)
             {
                 var service = (ServiceViewModel)serviceListView.SelectedItem; // casting the list view
-                MessageBox.Show($"Request to Stop service:'{service.Name}'", "Nutrition", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Request to Stop service:'{service.Name}'", "Service Item Context Menu Test", MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
         }
@@ -126,8 +127,29 @@ namespace ServiceMan
             if (serviceListView.SelectedIndex > -1)
             {
                 var service = (ServiceViewModel)serviceListView.SelectedItem; // casting the list view
-                MessageBox.Show($"Request to Restart service:'{service.Name}'", "Nutrition", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Request to Restart service:'{service.Name}'", "Service Item Context Menu Test", MessageBoxButton.OK, MessageBoxImage.Information);
 
+            }
+        }
+
+        private void serviceListView_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            if (serviceListView.SelectedIndex > -1)
+            {
+                var service = (ServiceViewModel)serviceListView.SelectedItem; // casting the list view
+
+                if (service.IsRunning)
+                {
+                    mnuItem_Start.IsEnabled = false;
+                    mnuItem_Stop.IsEnabled = true;
+                    mnuItem_Restart.IsEnabled = true;
+                }
+                else
+                {
+                    mnuItem_Start.IsEnabled = true;
+                    mnuItem_Stop.IsEnabled = false;
+                    mnuItem_Restart.IsEnabled = false;
+                }
             }
         }
     }
