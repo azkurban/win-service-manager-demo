@@ -14,14 +14,13 @@ namespace NativeDllTestApp
         public string Description { get; set; }
         public string ImagePath { get; set; }
         public string Status { get; set; }
-        //public string GroupName;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct MyStruct
-    {
-        public int IntValue;
-        public string StringValue;
-        public string StringValue2;
-    }
+    //[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    //public struct MyStruct
+    //{
+    //    public int IntValue;
+    //    public string StringValue;
+    //    public string StringValue2;
+    //}
 }

@@ -1,7 +1,19 @@
 #pragma once
-#include<vector>
 
+#include<vector>
 #include "OleAuto.h"
+
+#define SERVICE_CONTROL_OPERATOR_SUCCEED 0
+#define SERVICE_CONTROL_OPERATOR_FAILED -1
+
+//#pragma pack(1)
+//structure for service control status info retrieval
+typedef struct _ServiceContrlolState
+{
+    DWORD ErrorCode;
+    BSTR Message;
+} ServiceControlState;
+//#pragma pack() //reset pack size to default
 
 typedef struct _ServiceProcess
 {
@@ -13,13 +25,6 @@ typedef struct _ServiceProcess
     //BSTR         GroupName;
 } ServiceProcess;
 
-typedef struct _MyStruct
-{
-   int IntValue;
-   BSTR StringValue;
-   BSTR StringValue2;
-} MyStruct;
-
 extern struct ServiceStatusProcess;
 
 
@@ -29,6 +34,8 @@ private:
     std::vector<ServiceStatusProcess> _winServices;
     void InitServiceList();
     void CopyStrValue(std::wstring svalue, BSTR& target);
+    //void CopyLPWStrValue(LPCWSTR svalue, BSTR& target);
+    BOOL __stdcall StopDependentServices(SC_HANDLE schService, SC_HANDLE schSCManager);
 
 public:
     WinServiceHelper();
@@ -36,6 +43,10 @@ public:
 
     void ServiceList(ServiceProcess* services, size_t count);
     size_t ServiceCount();
+
+    int StartSvc(LPCWSTR serviceName, ServiceControlState* pSCState);
+    int StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState);
+    int RestartSvc(LPCWSTR serviceName, ServiceControlState* pSCState);
 };
 
 

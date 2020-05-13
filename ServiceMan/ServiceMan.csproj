@@ -53,6 +53,7 @@
     <Compile Include="Services\IServiceDataProvider.cs" />
     <Compile Include="Services\NativeAPI.cs" />
     <Compile Include="Model\ServiceProcess.cs" />
+    <Compile Include="Services\NativeCallResult.cs" />
     <Compile Include="Services\ServiceDataProvider.cs" />
     <Compile Include="Services\ServiceProviderBase.cs" />
     <Compile Include="Tests\MockServiceDataProvider.cs" />

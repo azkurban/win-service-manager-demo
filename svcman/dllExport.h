@@ -1,6 +1,7 @@
 #pragma once
 
 #define DLL_EXPORT_API extern "C" __declspec(dllexport)
+
 #include "WinServiceHelper.h"
 
 DLL_EXPORT_API
@@ -10,12 +11,11 @@ DLL_EXPORT_API
 void ServiceList(ServiceProcess* services, size_t count);
 
 DLL_EXPORT_API
-void __stdcall SetStringArray(SAFEARRAY& safeArray);
+int StartWinService(BSTR serviceName, ServiceControlState* svcState);
 
 DLL_EXPORT_API
-void GetStringArray(SAFEARRAY*& pSafeArray);
+int StopWinService(BSTR serviceName, ServiceControlState* pSCState);
 
 DLL_EXPORT_API
-int SendArray(MyStruct* arr, int recordsCount);
-
+int RestartWinService(BSTR serviceName, ServiceControlState* svcState);
 
