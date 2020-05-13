@@ -9,7 +9,7 @@ namespace NativeDllTestApp
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct ServiceProcess
     {
-        public int ProcessId { get; set; }
+        public uint ProcessId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }

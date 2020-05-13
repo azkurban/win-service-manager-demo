@@ -10,8 +10,13 @@
 //structure for service control status info retrieval
 typedef struct _ServiceContrlolState
 {
-    DWORD ErrorCode;
-    BSTR Message;
+    DWORD   CurrentState;
+    DWORD   Win32ExitCode;
+    DWORD   CheckPoint;
+    DWORD   WaitHint;
+    DWORD   ProcessId;
+    DWORD   ErrorCode;
+    BSTR    Message;
 } ServiceControlState;
 //#pragma pack() //reset pack size to default
 

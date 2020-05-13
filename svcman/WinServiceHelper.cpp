@@ -278,17 +278,28 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
     if (ssStatus.dwCurrentState == SERVICE_RUNNING)
     {
         statusMessage = _T("Service started successfully.\n");
-        CopyStrValue(statusMessage, pSCState->Message);
-        printf("%ws", statusMessage);
     }
     else
     {
-        printf("Service not started. \n");
-        printf("  Current State: %d\n", ssStatus.dwCurrentState);
-        printf("  Exit Code: %d\n", ssStatus.dwWin32ExitCode);
-        printf("  Check Point: %d\n", ssStatus.dwCheckPoint);
-        printf("  Wait Hint: %d\n", ssStatus.dwWaitHint);
+
+        statusMessage = _T("Service not started.\n");
+
+        //printf("Service not started. \n");
     }
+
+    CopyStrValue(statusMessage, pSCState->Message);
+    printf("%ws", statusMessage);
+
+    pSCState->CurrentState= ssStatus.dwCurrentState;
+    pSCState->Win32ExitCode= ssStatus.dwWin32ExitCode;
+    pSCState->CheckPoint= ssStatus.dwCheckPoint;
+    pSCState->WaitHint= ssStatus.dwWaitHint;
+    pSCState->ProcessId= ssStatus.dwProcessId;
+
+    printf("  Current State: %d\n", ssStatus.dwCurrentState);
+    printf("  Exit Code: %d\n", ssStatus.dwWin32ExitCode);
+    printf("  Check Point: %d\n", ssStatus.dwCheckPoint);
+    printf("  Wait Hint: %d\n", ssStatus.dwWaitHint);
 
     CloseServiceHandle(schService);
     CloseServiceHandle(schSCManager);
@@ -564,7 +575,6 @@ void  WinServiceHelper::CopyStrValue(std::wstring svalue, BSTR& target) {
     {
         target = (wchar_t*)CoTaskMemAlloc(size * sizeof(wchar_t));
         wmemcpy(target, svalue.c_str(), size);
-
     }
 }
 

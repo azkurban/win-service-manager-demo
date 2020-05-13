@@ -39,7 +39,7 @@ namespace NativeDllTestApp
                 //    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue2}");
                 //}
 
-                ulong svcCount = NativeAPI.ServiceCount();
+                uint svcCount = NativeAPI.ServiceCount();
 
                 var services = new ServiceProcess[svcCount];
                 Console.WriteLine($"ServiceProcess should be of size: {svcCount}");
@@ -65,34 +65,39 @@ namespace NativeDllTestApp
 
                 var svcState = new ServiceControlState();
 
+                Console.WriteLine($"Trying to stop service '{adobeARMservice.Name}'...");
+                int apiCallResult = NativeAPI.StopWinService(adobeARMservice.Name, ref svcState);
+
+                Console.WriteLine();
+                Console.WriteLine($"Service Control State");
+                Console.WriteLine("----------------------");
+                Console.WriteLine($"Error Code: '{svcState.ErrorCode}'.");
+                Console.WriteLine($"Message: '{svcState.Message}'.");
+                Console.WriteLine();
+
+                if (apiCallResult == NativeApiCallResult.FAILED)
                 {
-                    Console.WriteLine($"Trying to stop service '{adobeARMservice.Name}'...");
-                    int apiCallResult = NativeAPI.StopWinService(adobeARMservice.Name, ref svcState);
-                    Console.WriteLine();
-
-                    Console.WriteLine($"Service Control State");
-                    Console.WriteLine("----------------------");
-                    Console.WriteLine($"Error Code: '{svcState.ErrorCode}'.");
-                    Console.WriteLine($"Message: '{svcState.Message}'.");
-                    Console.WriteLine();
-
-                    if (apiCallResult == NativeApiCallResult.FAILED)
-                    {
-                        Console.WriteLine($"Failed to stop service: '{adobeARMservice.Name}'.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Service '{adobeARMservice.Name}' should be stopped");
-                    }
+                    Console.WriteLine($"Failed to stop service: '{adobeARMservice.Name}'.");
                 }
-                //else
+                else
+                {
+                    Console.WriteLine($"Service '{adobeARMservice.Name}' should be stopped");
+                }
+
                 {
                     Console.WriteLine($"Trying to start service '{adobeARMservice.Name}'...");
-                    int apiCallResult = NativeAPI.StartWinService(adobeARMservice.Name, ref svcState);
+                    apiCallResult = NativeAPI.StartWinService(adobeARMservice.Name, ref svcState);
                     Console.WriteLine();
 
                     Console.WriteLine($"Service Control State");
                     Console.WriteLine("----------------------");
+
+                    Console.WriteLine($"CurrentState: {svcState.CurrentState}");
+                    Console.WriteLine($"Win32ExitCode: {svcState.Win32ExitCode}");
+                    Console.WriteLine($"CheckPoint: {svcState.CheckPoint}");
+                    Console.WriteLine($"WaitHint: {svcState.WaitHint}");
+                    Console.WriteLine($"ProcessId: {svcState.ProcessId}");
+
                     Console.WriteLine($"Error Code: '{svcState.ErrorCode}'.");
                     Console.WriteLine($"Message: '{svcState.Message}'.");
                     Console.WriteLine();
@@ -109,11 +114,18 @@ namespace NativeDllTestApp
 
                 {
                     Console.WriteLine($"Trying to restart service '{adobeARMservice.Name}'...");
-                    int apiCallResult = NativeAPI.RestartWinService(adobeARMservice.Name, ref svcState);
+                    apiCallResult = NativeAPI.RestartWinService(adobeARMservice.Name, ref svcState);
                     Console.WriteLine();
 
                     Console.WriteLine($"Service Control State");
                     Console.WriteLine("----------------------");
+
+                    Console.WriteLine($"CurrentState: {svcState.CurrentState}");
+                    Console.WriteLine($"Win32ExitCode: {svcState.Win32ExitCode}");
+                    Console.WriteLine($"CheckPoint: {svcState.CheckPoint}");
+                    Console.WriteLine($"WaitHint: {svcState.WaitHint}");
+                    Console.WriteLine($"ProcessId: {svcState.ProcessId}");
+
                     Console.WriteLine($"Error Code: '{svcState.ErrorCode}'.");
                     Console.WriteLine($"Message: '{svcState.Message}'.");
                     Console.WriteLine();
@@ -129,7 +141,7 @@ namespace NativeDllTestApp
                 }
 
                 Console.WriteLine($"Trying to stop service '{adobeARMservice.Name}'...");
-                int apiCallResult = NativeAPI.StopWinService(adobeARMservice.Name, ref svcState);
+                apiCallResult = NativeAPI.StopWinService(adobeARMservice.Name, ref svcState);
                 Console.WriteLine();
 
                 Console.WriteLine($"Service Control State");
@@ -146,6 +158,7 @@ namespace NativeDllTestApp
                 {
                     Console.WriteLine($"Service '{adobeARMservice.Name}' should be stopped");
                 }
+
                 /*
 
                 int count = (int)(svcCount > 10 ? svcCount : svcCount);

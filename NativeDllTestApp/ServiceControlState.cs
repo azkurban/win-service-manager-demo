@@ -9,7 +9,12 @@ namespace NativeDllTestApp
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     struct ServiceControlState
     {
-        public ulong ErrorCode;
+        public uint CurrentState;
+        public uint Win32ExitCode;
+        public uint CheckPoint;
+        public uint WaitHint;
+        public uint ProcessId;
+        public uint ErrorCode;
         public string Message;
     }
 }
