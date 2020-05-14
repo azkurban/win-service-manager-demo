@@ -20,6 +20,7 @@
 
 #include <vector>
 #include <string>
+#include <strsafe.h>
 
 // Windows Header Files:
 #include <windows.h>

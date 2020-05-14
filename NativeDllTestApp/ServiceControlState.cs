@@ -6,7 +6,7 @@ using System.Text;
 
 namespace NativeDllTestApp
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     struct ServiceControlState
     {
         public uint CurrentState;
@@ -15,6 +15,7 @@ namespace NativeDllTestApp
         public uint WaitHint;
         public uint ProcessId;
         public uint ErrorCode;
+        public string ServiceName;
         public string Message;
     }
 }

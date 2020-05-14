@@ -71,8 +71,9 @@ namespace NativeDllTestApp
                 Console.WriteLine();
                 Console.WriteLine($"Service Control State");
                 Console.WriteLine("----------------------");
-                Console.WriteLine($"Error Code: '{svcState.ErrorCode}'.");
-                Console.WriteLine($"Message: '{svcState.Message}'.");
+                Console.WriteLine($"Error Code: {svcState.ErrorCode}");
+                Console.WriteLine($"Service Name: '{svcState.ServiceName}'");
+                Console.WriteLine($"Message: {svcState.Message}: '{svcState.ServiceName}'.");
                 Console.WriteLine();
 
                 if (apiCallResult == NativeApiCallResult.FAILED)
@@ -98,8 +99,9 @@ namespace NativeDllTestApp
                     Console.WriteLine($"WaitHint: {svcState.WaitHint}");
                     Console.WriteLine($"ProcessId: {svcState.ProcessId}");
 
-                    Console.WriteLine($"Error Code: '{svcState.ErrorCode}'.");
-                    Console.WriteLine($"Message: '{svcState.Message}'.");
+                    Console.WriteLine($"Error Code: {svcState.ErrorCode}");
+                    Console.WriteLine($"Service Name: '{svcState.ServiceName}'");
+                    Console.WriteLine($"Message: {svcState.Message}: '{svcState.ServiceName}'.");
                     Console.WriteLine();
 
                     if (apiCallResult == NativeApiCallResult.FAILED)
@@ -126,8 +128,10 @@ namespace NativeDllTestApp
                     Console.WriteLine($"WaitHint: {svcState.WaitHint}");
                     Console.WriteLine($"ProcessId: {svcState.ProcessId}");
 
-                    Console.WriteLine($"Error Code: '{svcState.ErrorCode}'.");
-                    Console.WriteLine($"Message: '{svcState.Message}'.");
+                    Console.WriteLine($"Error Code: {svcState.ErrorCode}");
+                    Console.WriteLine($"Service Name: '{svcState.ServiceName}'");
+                    Console.WriteLine($"Message: {svcState.Message}: '{svcState.ServiceName}'.");
+                    //Console.WriteLine(svcState.Message);
                     Console.WriteLine();
 
                     if (apiCallResult == NativeApiCallResult.FAILED)
@@ -146,8 +150,9 @@ namespace NativeDllTestApp
 
                 Console.WriteLine($"Service Control State");
                 Console.WriteLine("----------------------");
-                Console.WriteLine($"Error Code: '{svcState.ErrorCode}'.");
-                Console.WriteLine($"Message: '{svcState.Message}'.");
+                Console.WriteLine($"Error Code: {svcState.ErrorCode}");
+                Console.WriteLine($"Service Name: '{svcState.ServiceName}'");
+                Console.WriteLine($"Message: {svcState.Message}: '{svcState.ServiceName}'.");
                 Console.WriteLine();
 
                 if (apiCallResult == NativeApiCallResult.FAILED)
@@ -159,9 +164,9 @@ namespace NativeDllTestApp
                     Console.WriteLine($"Service '{adobeARMservice.Name}' should be stopped");
                 }
 
-                /*
+                /**/
 
-                int count = (int)(svcCount > 10 ? svcCount : svcCount);
+                int count = (int)(svcCount > 4 ? 4 : svcCount);
                                 for (int i = 0; i < count; i++)
                                 {
                                     var svc = services[i];
@@ -171,10 +176,9 @@ namespace NativeDllTestApp
                                     Console.WriteLine($"ServiceProcess.Description = {svc.Description}");
                                     Console.WriteLine($"ServiceProcess.ImagePath = {svc.ImagePath}");
                                     Console.WriteLine($"ServiceProcess.Status = {svc.Status}");
-                                    //Console.WriteLine($"ServiceProcess.GroupName = {svc.GroupName}");
                                     Console.WriteLine();
                                 }
-                */
+                /**/
                 //string[] wstrings = null;
                 //NativeAPI.GetWStringArray(out wstrings);
                 //Console.WriteLine($"The following wide strings were received: {String.Join(", ", wstrings)}");
@@ -199,7 +203,7 @@ namespace NativeDllTestApp
                 Console.WriteLine(ex.Message);
             }
 
-            Console.ReadKey();
+            Console.ReadLine();
 
         }
     }

@@ -5,6 +5,14 @@
 #include "ServiceController.h"
 #include "ServiceEnumerator.h"
 
+// Globals
+//
+//SERVICE_STATUS          ssService;
+//SERVICE_STATUS_HANDLE   hssService;
+
+HANDLE                  g_hEvent;
+
+
 WinServiceHelper::WinServiceHelper()
 {
     InitServiceList();
@@ -128,9 +136,10 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
 
     if (ssStatus.dwCurrentState != SERVICE_STOPPED && ssStatus.dwCurrentState != SERVICE_STOP_PENDING)
     {
-        statusMessage = _T("Service is already running.\n");
+        statusMessage = _T("Service is already running");
+        CopyStrValue(serviceName, pSCState->ServiceName);
         CopyStrValue(statusMessage, pSCState->Message);
-        printf("%ws", statusMessage);
+        printf("%ws.\n", statusMessage);
         //printf("Cannot start the service because it is already running\n");
         
         CloseServiceHandle(schService);
@@ -158,7 +167,17 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         else if (dwWaitTime > 10000)
             dwWaitTime = 10000;
 
-        Sleep(dwWaitTime);
+        //Sleep(dwWaitTime);
+
+        auto errorCode = StartMonitor(serviceName, schService, dwWaitTime);
+
+        if (errorCode != ERROR_SUCCESS)
+        {
+            CloseServiceHandle(schService);
+            CloseServiceHandle(schSCManager);
+            return SERVICE_CONTROL_OPERATOR_FAILED;
+        }
+
 
         // Check the status until the service is no longer stop pending. 
 
@@ -241,7 +260,15 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         else if (dwWaitTime > 10000)
             dwWaitTime = 10000;
 
-        Sleep(dwWaitTime);
+        //Sleep(dwWaitTime);
+        auto errorCode = StartMonitor(serviceName, schService, dwWaitTime);
+
+        if (errorCode != ERROR_SUCCESS)
+        {
+            CloseServiceHandle(schService);
+            CloseServiceHandle(schSCManager);
+            return SERVICE_CONTROL_OPERATOR_FAILED;
+        }
 
         // Check the status again. 
 
@@ -277,18 +304,17 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
 
     if (ssStatus.dwCurrentState == SERVICE_RUNNING)
     {
-        statusMessage = _T("Service started successfully.\n");
+        statusMessage = _T("Service started successfully");
     }
     else
     {
-
-        statusMessage = _T("Service not started.\n");
-
+        statusMessage = _T("Service not started");
         //printf("Service not started. \n");
     }
 
+    CopyStrValue(serviceName, pSCState->ServiceName);
     CopyStrValue(statusMessage, pSCState->Message);
-    printf("%ws", statusMessage);
+    printf("%ws.\n", statusMessage);
 
     pSCState->CurrentState= ssStatus.dwCurrentState;
     pSCState->Win32ExitCode= ssStatus.dwWin32ExitCode;
@@ -370,9 +396,10 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
 
     if (ssp.dwCurrentState == SERVICE_STOPPED)
     {
-        statusMessage = _T("Service is already stopped.\n");
+        statusMessage = _T("Service is already stopped");
+        CopyStrValue(serviceName, pSCState->ServiceName);
         CopyStrValue(statusMessage, pSCState->Message);
-        printf("%ws", statusMessage);
+        printf("%ws.\n", statusMessage);
         //printf("Service is already stopped.\n");
         goto stop_cleanup;
     }
@@ -409,9 +436,10 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
 
         if (ssp.dwCurrentState == SERVICE_STOPPED)
         {
-            statusMessage = _T("Service stopped successfully.\n");
+            statusMessage = _T("Service stopped successfully");
+            CopyStrValue(serviceName, pSCState->ServiceName);
             CopyStrValue(statusMessage, pSCState->Message);
-            printf("%ws", statusMessage);
+            printf("%ws.\n", statusMessage);
             //printf("Service stopped successfully.\n");
             goto stop_cleanup;
         }
@@ -464,9 +492,10 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
         }
     }
 
-    statusMessage = _T("Service stopped successfully.\n");
+    statusMessage = _T("Service stopped successfully");
+    CopyStrValue(serviceName, pSCState->ServiceName);
     CopyStrValue(statusMessage, pSCState->Message);
-    printf("%ws", statusMessage);
+    printf("%ws.\n", statusMessage);
 
 stop_cleanup:
     CloseServiceHandle(schService);
@@ -568,8 +597,58 @@ BOOL __stdcall WinServiceHelper::StopDependentServices(SC_HANDLE schService, SC_
     return TRUE;
 }
 
+DWORD WinServiceHelper::StartMonitor(LPCWSTR  serviceName, SC_HANDLE   hService, DWORD timeOut)
+{
+    long lResult;
+
+    DWORD       dwError = ERROR_SUCCESS;
+    DWORD       dwStatus;
+    DWORD       dwMask;
+    DWORD       dwBufSize;
+    
+    NOTIFY_CONTEXT NotifyContext = { 0 };
+    SERVICE_NOTIFY  snServiceNotify;
+
+    // Initialize callback context
+    NotifyContext.ServiceName = serviceName;
+
+    // Intialize notification struct
+    snServiceNotify.dwVersion = SERVICE_NOTIFY_STATUS_CHANGE;
+    snServiceNotify.pfnNotifyCallback = (PFN_SC_NOTIFY_CALLBACK)NotifyCallback;
+    snServiceNotify.pContext = &NotifyContext;
+
+    // We care about changes to RUNNING and STOPPED states only
+    dwMask = SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_STOPPED;
+
+    while (TRUE)
+    {
+        // Register for notification
+        dwStatus = NotifyServiceStatusChange(hService, dwMask, &snServiceNotify);
+
+        if (dwStatus != ERROR_SUCCESS)
+        {
+            SvcDebugOut(TEXT("NSSC failed - "), dwStatus);
+            dwError = dwStatus;
+            goto FnExit;
+        }
+
+        // Wait for notification to fire (or) for STOP control
+        dwStatus = WaitForSingleObjectEx(g_hEvent, timeOut, TRUE);
+
+        // Check if this was signaled due to a SERVICE_STOP control
+        if (dwStatus == WAIT_OBJECT_0)
+        {
+            break;
+        }
+    }
+
+FnExit:
+
+    return dwError;
+}
+
 void  WinServiceHelper::CopyStrValue(std::wstring svalue, BSTR& target) {
-    size_t size = svalue.size() +1;
+    size_t size = svalue.size() + 1;
 
     if (!svalue.empty())
     {
@@ -578,16 +657,105 @@ void  WinServiceHelper::CopyStrValue(std::wstring svalue, BSTR& target) {
     }
 }
 
-/**
-void  WinServiceHelper::CopyLPWStrValue(LPCWSTR svalue, BSTR& target) {
-    size_t size = wcslen(svalue) + 1;
 
-    if (size > 1)
+
+VOID CALLBACK NotifyCallback(PVOID pParameter)
+{
+    HRESULT hr = S_OK;
+    PSERVICE_NOTIFY         pNotify = (PSERVICE_NOTIFY)pParameter;
+    PNOTIFY_CONTEXT         pContext = (PNOTIFY_CONTEXT)pNotify->pContext;
+    TCHAR szStatus[1024];
+
+    if (pNotify->ServiceStatus.dwCurrentState == SERVICE_RUNNING)
     {
-        target = (wchar_t*)CoTaskMemAlloc(size * sizeof(wchar_t));
-        wmemcpy(target, svalue, size);
-        //swprintf_s(target, size, svalue);
+        hr = StringCchPrintf(szStatus, 1024, TEXT("%s %s.\r\n"), pContext->ServiceName, TEXT("entered running state"));
+    }
+    else
+    {
+        hr = StringCchPrintf(szStatus, 1024, TEXT("%s %s.\r\n"), pContext->ServiceName, TEXT("entered stopped state"));
+    }
 
+    if (hr != S_OK)
+    {
+        OutputDebugString(TEXT("Error creating status msg"));
+    }
+    else
+    {
+        WriteMonitorLog(szStatus);
     }
 }
-*/
+
+VOID WriteMonitorLog(LPTSTR szStatus)
+{
+    HANDLE hLogFile = INVALID_HANDLE_VALUE;
+    HRESULT hr = S_OK;
+    LPCTSTR szFileNameSuffix = TEXT("\\MonSvc\\SvcMonitor.log");
+    TCHAR szFileName[MAX_PATH];
+    BOOL bRet = FALSE;
+    DWORD dwSize;
+
+    if (szStatus == NULL)
+    {
+        SvcDebugOut(TEXT("Invalid service status - "), ERROR_INVALID_PARAMETER);
+        goto FnExit;
+    }
+
+    dwSize = ExpandEnvironmentStrings(TEXT("%ProgramFiles%"), szFileName, MAX_PATH);
+    if (dwSize == 0 || dwSize > MAX_PATH)
+    {
+        SvcDebugOut(TEXT("File name too long - "), GetLastError());
+        goto FnExit;
+    }
+
+    hr = StringCchCat(szFileName, MAX_PATH, szFileNameSuffix);
+    if (hr != S_OK)
+    {
+        SvcDebugOut(TEXT("File name too long - "), ERROR_INSUFFICIENT_BUFFER);
+        goto FnExit;
+    }
+
+
+    hLogFile = CreateFile(szFileName,
+        GENERIC_READ | GENERIC_WRITE,
+        0,
+        NULL,
+        OPEN_ALWAYS,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
+
+    if (hLogFile == INVALID_HANDLE_VALUE)
+    {
+        SvcDebugOut(TEXT("Cannot open monitor log - "), GetLastError());
+        goto FnExit;
+    }
+
+    SetFilePointer(hLogFile, 0, NULL, FILE_END);
+    bRet = WriteFile(hLogFile, szStatus, DWORD((_tcslen(szStatus)) * sizeof(TCHAR)), &dwSize, NULL);
+
+    if (!bRet)
+    {
+        SvcDebugOut(TEXT("Cannot write to  log - "), GetLastError());
+    }
+
+FnExit:
+    CloseHandle(hLogFile);
+}
+
+VOID SvcDebugOut(const wchar_t* String, DWORD Status)
+{
+    HRESULT hr = S_OK;
+    TCHAR  Buffer[1024];
+    hr = StringCchPrintf(Buffer, 1024, String, Status);
+    if (hr == S_OK)
+    {
+        OutputDebugString(Buffer);
+    }
+    else
+    {
+        OutputDebugString(TEXT("Error in Dbg string"));
+    }
+}
+
+
+
+

@@ -27,6 +27,9 @@ namespace NativeDllTestApp
         public static extern int RestartWinService([MarshalAs(UnmanagedType.BStr)] string serviceName, ref ServiceControlState svcState);
 
         /*////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        [DllImport(DLL_LOCATION, SetLastError = true)]
+        static extern TODO NotifyServiceStatusChange(TODO);
+
         [DllImport(DLL_LOCATION, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern void SetStringArray([MarshalAs(UnmanagedType.SafeArray)] string[] array);
 

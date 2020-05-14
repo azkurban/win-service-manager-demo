@@ -6,7 +6,7 @@ using System.Text;
 
 namespace NativeDllTestApp
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct ServiceProcess
     {
         public uint ProcessId { get; set; }
