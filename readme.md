@@ -14,12 +14,15 @@
 [BadImageFormatException, x86 i x64](https://www.codeproject.com/articles/383138/badimageformatexception-x86-i-x64)
 
 
-###C++
+###C++ Unmanaged DLL
 
 ####Microsof Documentation:
 
 [Starting a Service](https://docs.microsoft.com/en-us/windows/win32/services/starting-a-service)
 [Stopping a Service](https://docs.microsoft.com/en-us/windows/win32/services/stopping-a-service]
+
+[NotifyServiceStatusChangeA function](https://docs.microsoft.com/en-us/windows/win32/api/winsvc/nf-winsvc-notifyservicestatuschangea?redirectedfrom=MSDN)
+[Asynchronous Procedure Calls](https://docs.microsoft.com/en-us/windows/win32/sync/asynchronous-procedure-calls)
 
 #####GitHub:
 [microsoft/Windows-classic-samples/Samples/Win7Samples/winbase/monitorservices/monsvc/MonSvc.cxx](https://github.com/microsoft/Windows-classic-samples/blob/master/Samples/Win7Samples/winbase/monitorservices/monsvc/MonSvc.cxx)
