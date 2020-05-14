@@ -167,9 +167,9 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         else if (dwWaitTime > 10000)
             dwWaitTime = 10000;
 
-        //Sleep(dwWaitTime);
 
         auto errorCode = StartMonitor(serviceName, schService, dwWaitTime);
+        Sleep(dwWaitTime);
 
         if (errorCode != ERROR_SUCCESS)
         {
@@ -260,8 +260,8 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         else if (dwWaitTime > 10000)
             dwWaitTime = 10000;
 
-        //Sleep(dwWaitTime);
         auto errorCode = StartMonitor(serviceName, schService, dwWaitTime);
+        Sleep(dwWaitTime);
 
         if (errorCode != ERROR_SUCCESS)
         {
@@ -271,7 +271,6 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         }
 
         // Check the status again. 
-
         if (!QueryServiceStatusEx(
             schService,             // handle to service 
             SC_STATUS_PROCESS_INFO, // info level
@@ -286,7 +285,6 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         if (ssStatus.dwCheckPoint > dwOldCheckPoint)
         {
             // Continue to wait and check.
-
             dwStartTickCount = GetTickCount();
             dwOldCheckPoint = ssStatus.dwCheckPoint;
         }
@@ -301,7 +299,6 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
     }
 
     // Determine whether the service is running.
-
     if (ssStatus.dwCurrentState == SERVICE_RUNNING)
     {
         statusMessage = _T("Service started successfully");
@@ -620,7 +617,7 @@ DWORD WinServiceHelper::StartMonitor(LPCWSTR  serviceName, SC_HANDLE   hService,
     // We care about changes to RUNNING and STOPPED states only
     dwMask = SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_STOPPED;
 
-    while (TRUE)
+    //while (TRUE)
     {
         // Register for notification
         dwStatus = NotifyServiceStatusChange(hService, dwMask, &snServiceNotify);
@@ -633,13 +630,13 @@ DWORD WinServiceHelper::StartMonitor(LPCWSTR  serviceName, SC_HANDLE   hService,
         }
 
         // Wait for notification to fire (or) for STOP control
-        dwStatus = WaitForSingleObjectEx(g_hEvent, timeOut, TRUE);
+        //dwStatus = WaitForSingleObjectEx(g_hEvent, timeOut, TRUE);
 
         // Check if this was signaled due to a SERVICE_STOP control
-        if (dwStatus == WAIT_OBJECT_0)
-        {
-            break;
-        }
+        //if (dwStatus == WAIT_OBJECT_0)
+        //{
+        //    break;
+        //}
     }
 
 FnExit:

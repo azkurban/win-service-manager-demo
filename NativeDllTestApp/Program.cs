@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServiceMan.Model;
+using ServiceMan.Services;
+using ServiceMan.Model;
+
 
 namespace NativeDllTestApp
 {
@@ -11,33 +15,6 @@ namespace NativeDllTestApp
         {
             try
             {
-
-                //ServiceProcess[] services = null;
-                ////NativeAPI.GetServiceList(out services);
-                ////var count = NativeAPI.GetServiceListSize();
-                //Console.WriteLine($"Service Count: { services?.Length ?? -1 }");
-
-                //string[] array = new string[] { "one", "two", "three", "four", "Раз", "два", "три" };
-                //NativeAPI.SetStringArray(array);
-                //Console.WriteLine($"The following strings were passed: {String.Join(", ", array)}");
-
-                //string[] results = null;
-                //NativeAPI.GetStringArray(out results);
-                //Console.WriteLine($"The following strings were received: {String.Join(", ", results)}");
-
-                //MyStruct[] myStructs = new MyStruct[7];
-                //int size = NativeAPI.SendArray(myStructs, 7);
-                //Console.WriteLine($"myStruct sould bo of size: {size}");
-
-                //if (myStructs == null)
-                //    throw new NullReferenceException("myStructs IS NULL!");
-
-                //foreach(var myStruct in myStructs)
-                //{
-                //    Console.WriteLine($"myStruct.IntValue = {myStruct.IntValue}");
-                //    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue}");
-                //    Console.WriteLine($"myStruct.StringValue = {myStruct.StringValue2}");
-                //}
 
                 uint svcCount = NativeAPI.ServiceCount();
 
@@ -71,6 +48,13 @@ namespace NativeDllTestApp
                 Console.WriteLine();
                 Console.WriteLine($"Service Control State");
                 Console.WriteLine("----------------------");
+
+                Console.WriteLine($"CurrentState: {svcState.CurrentState}");
+                Console.WriteLine($"Win32ExitCode: {svcState.Win32ExitCode}");
+                Console.WriteLine($"CheckPoint: {svcState.CheckPoint}");
+                Console.WriteLine($"WaitHint: {svcState.WaitHint}");
+                Console.WriteLine($"ProcessId: {svcState.ProcessId}");
+
                 Console.WriteLine($"Error Code: {svcState.ErrorCode}");
                 Console.WriteLine($"Service Name: '{svcState.ServiceName}'");
                 Console.WriteLine($"Message: {svcState.Message}: '{svcState.ServiceName}'.");

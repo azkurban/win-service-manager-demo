@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
+using ServiceMan.Model;
 
-namespace NativeDllTestApp
+namespace NativeDllTestApp_0ld
 {
     /// <summary>
     /// http://msdn.microsoft.com/en-us/library/aa288468(VS.71).aspx

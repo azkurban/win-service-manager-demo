@@ -4,10 +4,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace NativeDllTestApp_0ld
+namespace ServiceMan.Model
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
-    struct ServiceControlState
+    public struct ServiceControlState
     {
         public uint CurrentState;
         public uint Win32ExitCode;

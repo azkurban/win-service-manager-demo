@@ -12,7 +12,7 @@ namespace ServiceMan.Services
     {
         public override ServiceDataSource GetData()
         {
-            ulong count = NativeAPI.ServiceCount();
+            uint count = NativeAPI.ServiceCount();
 
             var data = new ServiceProcess[count];
             NativeAPI.ServiceList(data, count);

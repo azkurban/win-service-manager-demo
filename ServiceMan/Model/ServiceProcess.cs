@@ -6,10 +6,10 @@ using System.Text;
 
 namespace ServiceMan.Model
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal struct ServiceProcess
+    [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
+    public struct ServiceProcess
     {
-        public int ProcessId { get; set; }
+        public uint ProcessId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }

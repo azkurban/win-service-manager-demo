@@ -26,6 +26,6 @@ namespace ServiceMan.ViewModel
         public string Group { get; private set; }
         public string ImagePath { get; private set; }
 
-        public bool IsRunning => Status.Equals(ServiceStatus.Running.ToString());
+        public bool IsRunning => Status.Equals(ServiceStatus.SERVICE_RUNNING.ToString());
     };
 }
