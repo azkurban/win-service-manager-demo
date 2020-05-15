@@ -3,11 +3,19 @@ Demo hybrid WPF/C++ app using PInvoke for Windows Service Control management.
 
 ## Solution:
 
-WPF app project (C#):        **ServiceMan**
+### WPF app project (C#, .NET 3.5): **ServiceMan**
 
-Unmanaged DLL project (C++): **svcman**
+So the application can work on all Windows 7+ (32/64) 0S with .NET 3.5 Framework installed.  
+
+### Console Test App (C#, .NET 4.0): **NativeDllTestApp**
+
+.NET 4.0 have have been chosed for the test application due to .NET 3.5 does not supported mixed debugging (from managed to unmanaged code).
+
+### Unmanaged DLL project (C++): **svcman**
 
 ## Resources
+
+### Interop (Platform Invoke is used)
 
 #### Books
 
@@ -16,6 +24,8 @@ Unmanaged DLL project (C++): **svcman**
 #### Blogs
 
 [BadImageFormatException, x86 i x64](https://www.codeproject.com/articles/383138/badimageformatexception-x86-i-x64)
+
+Please refere to this article to learn how to proper build the app for both Win32 and Win64 OS versions.
 
 ### C++ Unmanaged DLL
 
