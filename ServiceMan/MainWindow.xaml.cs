@@ -25,7 +25,7 @@ namespace ServiceMan
     {
         private Stopwatch _watch;
         private BackgroundWorker _backgroundWorker;
-        private ServiceDataSource _dataContext;
+        private ServiceListViewModel _dataContext;
         private CollectionViewSource _serviceDataSourceViewSource;
 
         public MainWindow()
@@ -37,7 +37,7 @@ namespace ServiceMan
             _backgroundWorker.DoWork += (_, args) =>
             {
                 //ServiceDataSource dataContext = (new ServiceDataProvider()).GetMockData();
-                _dataContext = (new ServiceDataProvider()).GetData();
+                _dataContext = (new ServiceDataProvider()).GetServiceListViewModel();
             };
 
             _backgroundWorker.RunWorkerCompleted += BackgroundWorkerRunWorkerCompleted;
@@ -87,8 +87,6 @@ namespace ServiceMan
 
                 // Show message box
                 MessageBoxResult result = MessageBox.Show(message, caption, buttons, icon);
-
-                //StocksStatus.Text = e.Error.Message;
             }
         }
 

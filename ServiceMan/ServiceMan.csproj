@@ -58,7 +58,6 @@
     <Compile Include="Services\ServiceDataProvider.cs" />
     <Compile Include="Services\ServiceProviderBase.cs" />
     <Compile Include="Tests\MockServiceDataProvider.cs" />
-    <Compile Include="ViewModel\ServiceDataSource.cs" />
     <Compile Include="ViewModel\ServiceListViewModel.cs" />
     <Compile Include="ViewModel\ServiceViewModel.cs" />
     <Page Include="MainWindow.xaml">

@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="939" Loaded="Window_Loaded">
     <Window.Resources>
-        <CollectionViewSource x:Key="serviceDataSourceViewSource" d:DesignSource="{d:DesignInstance {x:Type ViewModel:ServiceDataSource}}"/>
+        <CollectionViewSource x:Key="serviceDataSourceViewSource" d:DesignSource="{d:DesignInstance {x:Type ViewModel:ServiceListViewModel}}"/>
         <!--<ContextMenu  MenuItem.Click="ServiceControl_Click"  
                                         x:Key="ServiceControl">
             <MenuItem Header="Start" />
@@ -116,7 +116,7 @@
                     </GridView>
                 </ListView.View>
                 <ListView.DataContext>
-                    <ViewModel:ServiceDataSource/>
+                    <ViewModel:ServiceListViewModel/>
                 </ListView.DataContext>
             </ListView>
 

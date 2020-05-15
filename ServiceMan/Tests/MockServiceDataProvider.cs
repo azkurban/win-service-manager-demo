@@ -9,9 +9,9 @@ namespace ServiceMan.Tests
 {
     class MockServiceDataProvider : ServiceProviderBase
     {
-        public override ServiceDataSource GetData()
+        public override ServiceListViewModel GetServiceListViewModel()
         {
-            var data = new ServiceDataSource();
+            var data = new ServiceListViewModel();
 
 
             string imagePath;
@@ -80,5 +80,19 @@ namespace ServiceMan.Tests
             return data;
         }
 
+        public override void RestartService(string serviceName, out ServiceViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void StartService(string serviceName, out ServiceViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void StopService(string serviceName, out ServiceViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
