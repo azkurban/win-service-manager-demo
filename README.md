@@ -9,7 +9,7 @@ So the application can work on all Windows 7+ (32/64) 0S with .NET 3.5 Framework
 
 ### Console Test App (C#, .NET 4.0): **NativeDllTestApp**
 
-.NET 4.0 have have been chosed for the test application due to .NET 3.5 does not supported mixed debugging (from managed to unmanaged code).
+.NET 4.0 have have been chosen for the test application due to .NET 3.5 does not supported mixed debugging (from managed to unmanaged code).
 
 ### Unmanaged DLL project (C++): **svcman**
 
@@ -25,16 +25,18 @@ So the application can work on all Windows 7+ (32/64) 0S with .NET 3.5 Framework
 
 [BadImageFormatException, x86 i x64](https://www.codeproject.com/articles/383138/badimageformatexception-x86-i-x64)
 
-Please refere to this article to learn how to proper build the app for both Win32 and Win64 OS versions.
+Please, refere to this article to learn how to proper build the app for both Win32 and Win64 OS versions.
 
 ### C++ Unmanaged DLL
 
 #### Microsof Documentation:
 
 [Starting a Service](https://docs.microsoft.com/en-us/windows/win32/services/starting-a-service)
+
 [Stopping a Service](https://docs.microsoft.com/en-us/windows/win32/services/stopping-a-service)
 
 [NotifyServiceStatusChangeA function](https://docs.microsoft.com/en-us/windows/win32/api/winsvc/nf-winsvc-notifyservicestatuschangea?redirectedfrom=MSDN)
+
 [Asynchronous Procedure Calls](https://docs.microsoft.com/en-us/windows/win32/sync/asynchronous-procedure-calls)
 
 ##### GitHub:
