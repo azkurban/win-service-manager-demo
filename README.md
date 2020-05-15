@@ -1,6 +1,12 @@
 # win-service-manager-demo
 Demo hybrid WPF/C++ app using PInvoke for Windows Service Control management.
 
+## Solution:
+
+WPF app project (C#):        **ServiceMan**
+
+Unmanaged DLL project (C++): **svcman**
+
 ## Resources
 
 #### Books
