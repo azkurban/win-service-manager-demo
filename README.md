@@ -5,7 +5,7 @@ Demo hybrid WPF/C++ app using PInvoke for Windows Service Control management.
 
 ### WPF app project (C#, .NET 3.5): **ServiceMan**
 
-This application can work under all Windows 7+ (32/64) 0S with .NET 3.5 Framework installed.  
+This application can work under all Windows 7+ (x86/x64) 0S versions with .NET 3.5 Framework installed.  
 
 ### Console Test App (C#, .NET 4.0): **NativeDllTestApp**
 
