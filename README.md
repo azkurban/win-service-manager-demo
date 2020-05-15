@@ -25,7 +25,7 @@ This application can work under all Windows 7+ (32/64) 0S with .NET 3.5 Framewor
 
 [BadImageFormatException, x86 i x64](https://www.codeproject.com/articles/383138/badimageformatexception-x86-i-x64)
 
-Please, refere to this article to learn how to proper build the app for both Win32 and Win64 OS versions.
+Please, refere to this article to learn how to proper build (or even configure without rebuilding) the app for the both x86 and x64 Windows OS versions.
 
 ### C++ Unmanaged DLL
 
