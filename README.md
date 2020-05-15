@@ -11,7 +11,6 @@ Demo hybrid WPF/C++ app using PInvoke for Windows Service Control management.
 
 [BadImageFormatException, x86 i x64](https://www.codeproject.com/articles/383138/badimageformatexception-x86-i-x64)
 
-
 ### C++ Unmanaged DLL
 
 #### Microsof Documentation:
