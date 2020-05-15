@@ -40,6 +40,9 @@ Please, refere to this article to learn how to proper build the app for both Win
 [Asynchronous Procedure Calls](https://docs.microsoft.com/en-us/windows/win32/sync/asynchronous-procedure-calls)
 
 ##### GitHub:
+
+Using NotifyServiceStatusChange for monitoring services:
+
 [microsoft/Windows-classic-samples/Samples/Win7Samples/winbase/monitorservices/monsvc/MonSvc.cxx](https://github.com/microsoft/Windows-classic-samples/blob/master/Samples/Win7Samples/winbase/monitorservices/monsvc/MonSvc.cxx)
 
 ### WPF
