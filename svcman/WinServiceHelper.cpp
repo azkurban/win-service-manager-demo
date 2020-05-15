@@ -83,7 +83,10 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
     DWORD dwWaitTime;
     DWORD dwBytesNeeded;
 
+    DWORD errorCode = 0;
     LPCWSTR statusMessage;
+
+    CopyStrValue(serviceName, pSCState->ServiceName);
 
     // Get a handle to the SCM database. 
     auto schSCManager = OpenSCManager(
@@ -93,10 +96,10 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
    
     if (NULL == schSCManager)
     {
-        pSCState->ErrorCode = GetLastError();
+        errorCode = GetLastError();
         statusMessage = _T("OpenSCManager failed");
-        CopyStrValue(statusMessage, pSCState->Message);
-        printf("%ws (%d)\n", statusMessage, pSCState->ErrorCode);
+        FillStatus(statusMessage, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
 
         return SERVICE_CONTROL_OPERATOR_FAILED;
     }
@@ -111,7 +114,11 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
 
     if (schService == NULL)
     {
-        printf("OpenService failed (%d)\n", GetLastError());
+        errorCode = GetLastError();
+        statusMessage = _T("OpenService failed");
+        FillStatus(statusMessage, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
+
         CloseServiceHandle(schSCManager);
         return SERVICE_CONTROL_OPERATOR_FAILED;
     }
@@ -125,7 +132,11 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         sizeof(SERVICE_STATUS_PROCESS), // size of structure
         &dwBytesNeeded))              // size needed if buffer is too small
     {
-        printf("QueryServiceStatusEx failed (%d)\n", GetLastError());
+        errorCode = GetLastError();
+        statusMessage = _T("QueryServiceStatusEx failed");
+        FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
+
         CloseServiceHandle(schService);
         CloseServiceHandle(schSCManager);
         return SERVICE_CONTROL_OPERATOR_FAILED;
@@ -137,10 +148,8 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
     if (ssStatus.dwCurrentState != SERVICE_STOPPED && ssStatus.dwCurrentState != SERVICE_STOP_PENDING)
     {
         statusMessage = _T("Service is already running");
-        CopyStrValue(serviceName, pSCState->ServiceName);
-        CopyStrValue(statusMessage, pSCState->Message);
+        FillStatus(statusMessage, ssStatus, pSCState, errorCode);
         printf("%ws.\n", statusMessage);
-        //printf("Cannot start the service because it is already running\n");
         
         CloseServiceHandle(schService);
         CloseServiceHandle(schSCManager);
@@ -173,6 +182,10 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
 
         if (errorCode != ERROR_SUCCESS)
         {
+            statusMessage = _T("Unknown Error");
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+            printf("%ws (%d)\n", statusMessage, errorCode);
+
             CloseServiceHandle(schService);
             CloseServiceHandle(schSCManager);
             return SERVICE_CONTROL_OPERATOR_FAILED;
@@ -188,7 +201,11 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
             sizeof(SERVICE_STATUS_PROCESS), // size of structure
             &dwBytesNeeded))              // size needed if buffer is too small
         {
-            printf("QueryServiceStatusEx failed (%d)\n", GetLastError());
+            errorCode = GetLastError();
+            statusMessage = _T("QueryServiceStatusEx failed");
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+            printf("%ws (%d)\n", statusMessage, errorCode);
+
             CloseServiceHandle(schService);
             CloseServiceHandle(schSCManager);
             return SERVICE_CONTROL_OPERATOR_FAILED;
@@ -197,7 +214,6 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         if (ssStatus.dwCheckPoint > dwOldCheckPoint)
         {
             // Continue to wait and check.
-
             dwStartTickCount = GetTickCount();
             dwOldCheckPoint = ssStatus.dwCheckPoint;
         }
@@ -205,7 +221,11 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         {
             if (GetTickCount() - dwStartTickCount > ssStatus.dwWaitHint)
             {
-                printf("Timeout waiting for service to stop\n");
+                //errorCode = GetLastError();
+                statusMessage = _T("Timeout waiting for service to stop");
+                FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+                printf("%ws\n", statusMessage);
+
                 CloseServiceHandle(schService);
                 CloseServiceHandle(schSCManager);
                 return SERVICE_CONTROL_OPERATOR_FAILED;
@@ -220,7 +240,11 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         0,           // number of arguments 
         NULL))      // no arguments 
     {
-        printf("StartService failed (%d)\n", GetLastError());
+        errorCode = GetLastError();
+        statusMessage = _T("StartService failed");
+        FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
+
         CloseServiceHandle(schService);
         CloseServiceHandle(schSCManager);
         return SERVICE_CONTROL_OPERATOR_FAILED;
@@ -236,7 +260,11 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         sizeof(SERVICE_STATUS_PROCESS), // size of structure
         &dwBytesNeeded))              // if buffer too small
     {
-        printf("QueryServiceStatusEx failed (%d)\n", GetLastError());
+        errorCode = GetLastError();
+        statusMessage = _T("QueryServiceStatusEx failed");
+        FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
+        
         CloseServiceHandle(schService);
         CloseServiceHandle(schSCManager);
         return SERVICE_CONTROL_OPERATOR_FAILED;
@@ -260,11 +288,14 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
         else if (dwWaitTime > 10000)
             dwWaitTime = 10000;
 
-        auto errorCode = StartMonitor(serviceName, schService, dwWaitTime);
+        errorCode = StartMonitor(serviceName, schService, dwWaitTime);
         Sleep(dwWaitTime);
 
         if (errorCode != ERROR_SUCCESS)
         {
+            statusMessage = _T("Fail to start service");
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+
             CloseServiceHandle(schService);
             CloseServiceHandle(schSCManager);
             return SERVICE_CONTROL_OPERATOR_FAILED;
@@ -278,7 +309,10 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
             sizeof(SERVICE_STATUS_PROCESS), // size of structure
             &dwBytesNeeded))              // if buffer too small
         {
-            printf("QueryServiceStatusEx failed (%d)\n", GetLastError());
+            statusMessage = _T("QueryServiceStatusEx failed");
+            errorCode = GetLastError();
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+            printf("%ws (%d)\n", statusMessage, errorCode);
             break;
         }
 
@@ -306,23 +340,17 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
     else
     {
         statusMessage = _T("Service not started");
-        //printf("Service not started. \n");
+        printf("Service not started. \n");
     }
 
-    CopyStrValue(serviceName, pSCState->ServiceName);
-    CopyStrValue(statusMessage, pSCState->Message);
     printf("%ws.\n", statusMessage);
-
-    pSCState->CurrentState= ssStatus.dwCurrentState;
-    pSCState->Win32ExitCode= ssStatus.dwWin32ExitCode;
-    pSCState->CheckPoint= ssStatus.dwCheckPoint;
-    pSCState->WaitHint= ssStatus.dwWaitHint;
-    pSCState->ProcessId= ssStatus.dwProcessId;
 
     printf("  Current State: %d\n", ssStatus.dwCurrentState);
     printf("  Exit Code: %d\n", ssStatus.dwWin32ExitCode);
     printf("  Check Point: %d\n", ssStatus.dwCheckPoint);
     printf("  Wait Hint: %d\n", ssStatus.dwWaitHint);
+
+    FillStatus(statusMessage, ssStatus, pSCState, errorCode);
 
     CloseServiceHandle(schService);
     CloseServiceHandle(schSCManager);
@@ -342,13 +370,16 @@ int WinServiceHelper::StartSvc(LPCWSTR serviceName, ServiceControlState* pSCStat
 //
 int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState)
 {
-    SERVICE_STATUS_PROCESS ssp;
+    SERVICE_STATUS_PROCESS ssStatus;
     DWORD dwStartTime = GetTickCount();
     DWORD dwBytesNeeded;
     DWORD dwTimeout = 30000; // 30-second time-out
     DWORD dwWaitTime;
 
+    DWORD errorCode = 0;
     LPCWSTR statusMessage;
+
+    CopyStrValue(serviceName, pSCState->ServiceName);
 
     // Get a handle to the SCM database. 
     auto schSCManager = OpenSCManager(
@@ -358,7 +389,10 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
 
     if (NULL == schSCManager)
     {
-        printf("OpenSCManager failed (%d)\n", GetLastError());
+        errorCode = GetLastError();
+        statusMessage = _T("OpenSCManager failed");
+        FillStatus(statusMessage, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
         return SERVICE_CONTROL_OPERATOR_FAILED;
     }
 
@@ -373,7 +407,11 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
 
     if (schService == NULL)
     {
-        printf("OpenService failed (%d)\n", GetLastError());
+        errorCode = GetLastError();
+        statusMessage = _T("OpenService failed");
+        FillStatus(statusMessage, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
+        
         CloseServiceHandle(schSCManager);
         return SERVICE_CONTROL_OPERATOR_FAILED;
     }
@@ -383,27 +421,30 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
     if (!QueryServiceStatusEx(
         schService,
         SC_STATUS_PROCESS_INFO,
-        (LPBYTE)&ssp,
+        (LPBYTE)&ssStatus,
         sizeof(SERVICE_STATUS_PROCESS),
         &dwBytesNeeded))
     {
-        printf("QueryServiceStatusEx failed (%d)\n", GetLastError());
+        errorCode = GetLastError();
+        statusMessage = _T("QueryServiceStatusEx");
+        FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
         goto stop_cleanup;
     }
 
-    if (ssp.dwCurrentState == SERVICE_STOPPED)
+    if (ssStatus.dwCurrentState == SERVICE_STOPPED)
     {
+
         statusMessage = _T("Service is already stopped");
-        CopyStrValue(serviceName, pSCState->ServiceName);
-        CopyStrValue(statusMessage, pSCState->Message);
+        errorCode = GetLastError();
+        FillStatus(statusMessage, ssStatus, pSCState, errorCode);
         printf("%ws.\n", statusMessage);
-        //printf("Service is already stopped.\n");
         goto stop_cleanup;
     }
 
     // If a stop is pending, wait for it.
 
-    while (ssp.dwCurrentState == SERVICE_STOP_PENDING)
+    while (ssStatus.dwCurrentState == SERVICE_STOP_PENDING)
     {
         printf("Service stop pending...\n");
 
@@ -411,7 +452,7 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
         // one-tenth of the wait hint but not less than 1 second  
         // and not more than 10 seconds. 
 
-        dwWaitTime = ssp.dwWaitHint / 10;
+        dwWaitTime = ssStatus.dwWaitHint / 10;
 
         if (dwWaitTime < 1000)
             dwWaitTime = 1000;
@@ -423,27 +464,30 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
         if (!QueryServiceStatusEx(
             schService,
             SC_STATUS_PROCESS_INFO,
-            (LPBYTE)&ssp,
+            (LPBYTE)&ssStatus,
             sizeof(SERVICE_STATUS_PROCESS),
             &dwBytesNeeded))
         {
-            printf("QueryServiceStatusEx failed (%d)\n", GetLastError());
+            errorCode = GetLastError();
+            statusMessage = _T("QueryServiceStatusEx failed");
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+            printf("%ws (%d)\n", statusMessage, errorCode);
             goto stop_cleanup;
         }
 
-        if (ssp.dwCurrentState == SERVICE_STOPPED)
+        if (ssStatus.dwCurrentState == SERVICE_STOPPED)
         {
             statusMessage = _T("Service stopped successfully");
-            CopyStrValue(serviceName, pSCState->ServiceName);
-            CopyStrValue(statusMessage, pSCState->Message);
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
             printf("%ws.\n", statusMessage);
-            //printf("Service stopped successfully.\n");
             goto stop_cleanup;
         }
 
         if (GetTickCount() - dwStartTime > dwTimeout)
         {
-            printf("Service stop timed out.\n");
+            statusMessage = _T("Service stop timed out");
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+            printf("%ws.\n", statusMessage);
             goto stop_cleanup;
         }
     }
@@ -457,47 +501,71 @@ int WinServiceHelper::StopSvc(LPCWSTR serviceName, ServiceControlState* pSCState
     if (!ControlService(
         schService,
         SERVICE_CONTROL_STOP,
-        (LPSERVICE_STATUS)&ssp))
+        (LPSERVICE_STATUS)&ssStatus))
     {
-        printf("ControlService failed (%d)\n", GetLastError());
+        errorCode = GetLastError();
+        statusMessage = _T("ControlService failed");
+        FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+        printf("%ws (%d)\n", statusMessage, errorCode);
         goto stop_cleanup;
     }
 
     // Wait for the service to stop.
 
-    while (ssp.dwCurrentState != SERVICE_STOPPED)
+    while (ssStatus.dwCurrentState != SERVICE_STOPPED)
     {
-        Sleep(ssp.dwWaitHint);
+        Sleep(ssStatus.dwWaitHint);
         if (!QueryServiceStatusEx(
             schService,
             SC_STATUS_PROCESS_INFO,
-            (LPBYTE)&ssp,
+            (LPBYTE)&ssStatus,
             sizeof(SERVICE_STATUS_PROCESS),
             &dwBytesNeeded))
         {
-            printf("QueryServiceStatusEx failed (%d)\n", GetLastError());
+            errorCode = GetLastError();
+            statusMessage = _T("QueryServiceStatusEx failed");
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+            printf("%ws (%d)\n", statusMessage, errorCode);
             goto stop_cleanup;
         }
 
-        if (ssp.dwCurrentState == SERVICE_STOPPED)
+        if (ssStatus.dwCurrentState == SERVICE_STOPPED)
             break;
 
         if (GetTickCount() - dwStartTime > dwTimeout)
         {
-            printf("Wait timed out\n");
+            statusMessage = _T("Wait timed out");
+            FillStatus(statusMessage, ssStatus, pSCState, errorCode);
+            printf("%ws.\n", statusMessage);
             goto stop_cleanup;
         }
     }
 
     statusMessage = _T("Service stopped successfully");
-    CopyStrValue(serviceName, pSCState->ServiceName);
-    CopyStrValue(statusMessage, pSCState->Message);
+    FillStatus(statusMessage, ssStatus, pSCState, errorCode);
     printf("%ws.\n", statusMessage);
 
 stop_cleanup:
     CloseServiceHandle(schService);
     CloseServiceHandle(schSCManager);
     return SERVICE_CONTROL_OPERATOR_SUCCEED;
+}
+
+void WinServiceHelper::FillStatus(LPCWSTR statusMessage, SERVICE_STATUS_PROCESS ssStatus, ServiceControlState* pSCState, DWORD   errorCode)
+{
+    FillStatus(statusMessage, pSCState, errorCode);
+
+    pSCState->CurrentState = ssStatus.dwCurrentState;
+    pSCState->Win32ExitCode = ssStatus.dwWin32ExitCode;
+    pSCState->CheckPoint = ssStatus.dwCheckPoint;
+    pSCState->WaitHint = ssStatus.dwWaitHint;
+    pSCState->ProcessId = ssStatus.dwCurrentState == SERVICE_STOPPED ? 0 : ssStatus.dwProcessId;
+}
+
+void WinServiceHelper::FillStatus(LPCWSTR statusMessage, ServiceControlState* pSCState, DWORD   errorCode)
+{
+    CopyStrValue(statusMessage, pSCState->Message);
+    pSCState->ErrorCode = errorCode;
 }
 
 BOOL __stdcall WinServiceHelper::StopDependentServices(SC_HANDLE schService, SC_HANDLE schSCManager)

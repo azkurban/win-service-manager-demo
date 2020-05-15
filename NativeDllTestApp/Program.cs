@@ -134,6 +134,13 @@ namespace NativeDllTestApp
 
                 Console.WriteLine($"Service Control State");
                 Console.WriteLine("----------------------");
+
+                Console.WriteLine($"CurrentState: {svcState.CurrentState}");
+                Console.WriteLine($"Win32ExitCode: {svcState.Win32ExitCode}");
+                Console.WriteLine($"CheckPoint: {svcState.CheckPoint}");
+                Console.WriteLine($"WaitHint: {svcState.WaitHint}");
+                Console.WriteLine($"ProcessId: {svcState.ProcessId}");
+
                 Console.WriteLine($"Error Code: {svcState.ErrorCode}");
                 Console.WriteLine($"Service Name: '{svcState.ServiceName}'");
                 Console.WriteLine($"Message: {svcState.Message}: '{svcState.ServiceName}'.");

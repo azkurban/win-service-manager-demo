@@ -7,6 +7,7 @@ namespace ServiceMan.Model
 {
     public enum ServiceStatus
     {
+        UNKNOWN_STATE               = 0,
         SERVICE_STOPPED				= 1,
         SERVICE_START_PENDING		= 2,
         SERVICE_STOP_PENDING		= 3,

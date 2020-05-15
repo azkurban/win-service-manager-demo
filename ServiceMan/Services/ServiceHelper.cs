@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace ServiceMan.Services
 {
-    class ServiceDataProvider : ServiceProviderBase
+    class ServiceHelper : ServiceProviderBase
     {
         private ServiceListViewModel _listViewModel;
 
@@ -23,7 +23,10 @@ namespace ServiceMan.Services
             _listViewModel = new ServiceListViewModel();
 
             foreach (var svcInfo in services
-                .Where(s => !(s.ImagePath.StartsWith(@"\SystemRoot\System32\drivers\") || string.IsNullOrEmpty(s.ImagePath))))
+                .Where(s => !(string.IsNullOrEmpty(s.ImagePath) ||
+                            s.ImagePath.Contains(@"SystemRoot\")||
+                            s.ImagePath.StartsWith(@"system32\")))
+                .OrderBy(s => s.Name))
             {
                 string imagePath;
                 string group = ParseImagePath(svcInfo.ImagePath, out imagePath);
@@ -42,12 +45,10 @@ namespace ServiceMan.Services
             return _listViewModel;
 
         }
-        public override void StopService(string serviceName, out ServiceViewModel viewModel)
+        public override void StopService(ServiceViewModel viewModel)
         {
-            viewModel = _listViewModel.Single(s => s.Name == serviceName);
-
             var svcState = new ServiceControlState();
-            int apiCallResult = NativeAPI.StopWinService(serviceName, ref svcState);
+            int apiCallResult = NativeAPI.StopWinService(viewModel.Name, ref svcState);
 
             if (apiCallResult == NativeApiCallResult.SUCCEED)
             {
@@ -56,19 +57,17 @@ namespace ServiceMan.Services
             else
             {
                 string message = svcState.Message;
-                string caption = $"Fail to stop service: '{serviceName}'";
+                string caption = $"Fail to stop service: '{viewModel.Name}'";
 
                 // Show message box
-                ShowMessage(caption, message);
+                ShowErrorMessage(caption, message);
             }
         }
 
-        public override void StartService(string serviceName, out ServiceViewModel viewModel)
+        public override void StartService(ServiceViewModel viewModel)
         {
-            viewModel = _listViewModel.Single(s => s.Name == serviceName);
-
             var svcState = new ServiceControlState();
-            int apiCallResult = NativeAPI.StartWinService(serviceName, ref svcState);
+            int apiCallResult = NativeAPI.StartWinService(viewModel.Name, ref svcState);
 
             if (apiCallResult == NativeApiCallResult.SUCCEED)
             {
@@ -77,19 +76,19 @@ namespace ServiceMan.Services
             else
             {
                 string message = svcState.Message;
-                string caption = $"Fail to Start service: '{serviceName}'";
+                string caption = $"Fail to Start service: '{viewModel.Name}'";
 
                 // Show message box
-                ShowMessage(caption, message);
+                ShowErrorMessage(caption, message);
             }
         }
 
-        public override void RestartService(string serviceName, out ServiceViewModel viewModel)
+        public override void RestartService(ServiceViewModel viewModel)
         {
-            viewModel = _listViewModel.Single(s => s.Name == serviceName);
+            //viewModel = _listViewModel.Single(s => s.Name == service.Name);
 
             var svcState = new ServiceControlState();
-            int apiCallResult = NativeAPI.RestartWinService(serviceName, ref svcState);
+            int apiCallResult = NativeAPI.RestartWinService(viewModel.Name, ref svcState);
 
             if (apiCallResult == NativeApiCallResult.SUCCEED)
             {
@@ -98,14 +97,14 @@ namespace ServiceMan.Services
             else
             {
                 string message = svcState.Message;
-                string caption = $"Fail to Restart service: '{serviceName}'";
+                string caption = $"Fail to Restart service: '{viewModel.Name}'";
 
                 // Show message box
-                ShowMessage(caption, message);
+                ShowErrorMessage(caption, message);
             }
         }
 
-        private void ShowMessage(string caption, string message)
+        public void ShowErrorMessage(string caption, string message)
         {
             // Configure message box
             MessageBoxButton buttons = MessageBoxButton.OK;

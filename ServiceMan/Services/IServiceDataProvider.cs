@@ -5,9 +5,9 @@ namespace ServiceMan.Services
     interface IServiceDataProvider
     {
         ServiceListViewModel GetServiceListViewModel();
-        void StopService(string serviceName, out ServiceViewModel viewModel);
-        void StartService(string serviceName, out ServiceViewModel viewModel);
-        void RestartService(string serviceName, out ServiceViewModel viewModel);
+        void StopService(ServiceViewModel viewModel);
+        void StartService(ServiceViewModel viewModel);
+        void RestartService(ServiceViewModel viewModel);
 
     }
 }

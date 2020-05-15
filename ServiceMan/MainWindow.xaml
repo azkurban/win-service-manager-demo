@@ -9,12 +9,6 @@
         Title="MainWindow" Height="450" Width="939" Loaded="Window_Loaded">
     <Window.Resources>
         <CollectionViewSource x:Key="serviceDataSourceViewSource" d:DesignSource="{d:DesignInstance {x:Type ViewModel:ServiceListViewModel}}"/>
-        <!--<ContextMenu  MenuItem.Click="ServiceControl_Click"  
-                                        x:Key="ServiceControl">
-            <MenuItem Header="Start" />
-            <MenuItem Header="Stop" />
-            <MenuItem Header="Restart" />
-        </ContextMenu>-->
 
     </Window.Resources>
 
@@ -40,13 +34,6 @@
 
         <GroupBox Padding="5">
             <GroupBox.Header>Services</GroupBox.Header>
-            <!--<ListView HorizontalAlignment="Left" Height="340" Margin="-5,0,-5,-6" VerticalAlignment="Top" Width="780">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn/>
-                    </GridView>
-                </ListView.View>
-            </ListView>-->
 
             <ListView x:Name="serviceListView" HorizontalAlignment="Left" Height="340" Margin="-5,0,-5,-6" VerticalAlignment="Top" Width="922" DisplayMemberPath="Description" ItemsSource="{Binding Source={StaticResource serviceDataSourceViewSource}}" SelectedValuePath="Description" SelectionMode="Single" MouseRightButtonUp="ServiceListView_MouseRightButtonUp" Visibility="Hidden" ContextMenuOpening="serviceListView_ContextMenuOpening">
 
@@ -68,14 +55,6 @@
                         <GridViewColumn DisplayMemberBinding=
                           "{Binding Name, BindsDirectlyToSource=True}" 
                       Header="Name" >
-                            <!--<GridViewColumn.ContextMenu>
-                                    <ContextMenu  MenuItem.Click="LastNameCM_Click"  
-                                        Name="LastNameCM">
-                                        <MenuItem Header="Ascending" />
-                                        <MenuItem Header="Descending" />
-                                    </ContextMenu>
-                                </GridViewColumn.ContextMenu>-->
-
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding=
@@ -98,20 +77,6 @@
                         <GridViewColumn DisplayMemberBinding=
                           "{Binding ImagePath}" 
                       Header="Image Path" />
-
-                        <!--<GridViewColumn DisplayMemberBinding=
-                          "{Binding Path=ImagePath}" 
-                      Width="100">
-                            <GridViewColumnHeader>Image Path
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu  MenuItem.Click="LastNameCM_Click"  
-                                        Name="LastNameCM">
-                                        <MenuItem Header="Ascending" />
-                                        <MenuItem Header="Descending" />
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>-->
 
                     </GridView>
                 </ListView.View>

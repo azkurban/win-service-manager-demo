@@ -80,17 +80,17 @@ namespace ServiceMan.Tests
             return data;
         }
 
-        public override void RestartService(string serviceName, out ServiceViewModel viewModel)
+        public override void RestartService(ServiceViewModel viewModel)
         {
             throw new NotImplementedException();
         }
 
-        public override void StartService(string serviceName, out ServiceViewModel viewModel)
+        public override void StartService(ServiceViewModel viewModel)
         {
             throw new NotImplementedException();
         }
 
-        public override void StopService(string serviceName, out ServiceViewModel viewModel)
+        public override void StopService(ServiceViewModel viewModel)
         {
             throw new NotImplementedException();
         }

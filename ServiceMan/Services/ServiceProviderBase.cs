@@ -6,9 +6,9 @@ namespace ServiceMan.Services
     internal abstract class ServiceProviderBase : IServiceDataProvider
     {
         public abstract ServiceListViewModel GetServiceListViewModel();
-        public abstract void RestartService(string serviceName, out ServiceViewModel viewModel);
-        public abstract void StartService(string serviceName, out ServiceViewModel viewModel);
-        public abstract void StopService(string serviceName, out ServiceViewModel viewModel);
+        public abstract void RestartService(ServiceViewModel viewModel);
+        public abstract void StartService(ServiceViewModel viewModel);
+        public abstract void StopService(ServiceViewModel viewModel);
 
         protected virtual string ParseImagePath(string combinedPath, out string imagePath)
         {

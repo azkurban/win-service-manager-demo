@@ -100,6 +100,8 @@ private:
     //    Win32 Exit code
     DWORD StartMonitor(LPCWSTR  serviceName, SC_HANDLE   hService, DWORD timeOut);
 
+    void FillStatus(LPCWSTR statusMessage, SERVICE_STATUS_PROCESS ssStatus, ServiceControlState* pSCState, DWORD   ErrorCode);
+    void FillStatus(LPCWSTR statusMessage, ServiceControlState* pSCState, DWORD   errorCode);
 
 public:
     WinServiceHelper();

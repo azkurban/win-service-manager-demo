@@ -25,6 +25,7 @@ namespace ServiceMan.ViewModel
 
             _statusMap = new Dictionary<ServiceStatus, string>
             {
+                {ServiceStatus.UNKNOWN_STATE,          "Unknown" },
                 {ServiceStatus.SERVICE_STOPPED,          "Stopped" },
                 {ServiceStatus.SERVICE_RUNNING,          "Running" },
                 {ServiceStatus.SERVICE_PAUSED,           "Paused" },
