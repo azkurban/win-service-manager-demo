@@ -17,7 +17,7 @@ Demo hybrid WPF/C++ app using PInvoke for Windows Service Control management.
 #### Microsof Documentation:
 
 [Starting a Service](https://docs.microsoft.com/en-us/windows/win32/services/starting-a-service)
-[Stopping a Service](https://docs.microsoft.com/en-us/windows/win32/services/stopping-a-service]
+[Stopping a Service](https://docs.microsoft.com/en-us/windows/win32/services/stopping-a-service)
 
 [NotifyServiceStatusChangeA function](https://docs.microsoft.com/en-us/windows/win32/api/winsvc/nf-winsvc-notifyservicestatuschangea?redirectedfrom=MSDN)
 [Asynchronous Procedure Calls](https://docs.microsoft.com/en-us/windows/win32/sync/asynchronous-procedure-calls)
